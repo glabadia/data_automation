@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
 from utils import printList, destruct_info, destruct_info_upd, createDirectory
-from time import sleep
+from time import sleep, time
 from search import calibrateSearch
 EXPAND_WAIT_TIME: int = 50
 WAIT_TIME: int = 25
@@ -30,42 +30,42 @@ def expandVehicleInfo(driver):
 def expandVehicleInfoIdirect(driver):
     # sleep for 7-15 seconds to allow the browser to populate data, and fill the div with desired results.
     # sleep(20)
-    expandPath = "//div[@class='visible-md visible-lg right-expand-all']"
+    # expandPath = "//div[@class='visible-md visible-lg right-expand-all']"
     loaderOnInvisible = "//div[@id='loader'][contains(@style,'display: none;')]"
-    errorText = "Your search returned no results. Please review and adjust your search parameters to include more vehicles. Search parameters that are too narrow sometimes filter out all vehicles. Try resetting your search form by clicking on the reset button then do a simple make and model search."
+    # plusSignExpand = "i.glyphicon.text-left.expand-icon.glyphicon-plus-sign"
+    # firefox
+    plusSignFirefox = "//i[@class='glyphicon text-left expand-icon glyphicon-plus-sign']"
+    minusSignFirefox = "//i[@class='glyphicon text-left expand-icon glyphicon-minus-sign']"
     print("Waiting to populate data..")
 
-    # expandButton = driver.find_element_by_xpath(expandPath)
     # sleep(SLEEP_TIME)  # Allow for the loader image to fade out in the browser
     isLoaderPresent = False
+    startloader, endLoader = time(), time()
     try:
-        isLoaderPresent = WebDriverWait(driver, SLEEP_TIME).until(
+        isLoaderPresent = WebDriverWait(driver, WAIT_TIME).until(
             EC.presence_of_element_located((By.XPATH, loaderOnInvisible)))
+        endLoader = time()
     except Exception as e:
-        print(f"Error, {e}")
+        print(
+            f"Error: Loader is still present -- Time: {endLoader - startloader} {e}")
 
     if isLoaderPresent:
+        hasExpanded = False
         print("Loader gone!")
-        try:
-            expandButton = WebDriverWait(driver, EXPAND_WAIT_TIME).until(
-                EC.presence_of_element_located((By.XPATH, expandPath)))
-            expandButton.click()
-        except Exception as e:
-            print(f"Error, {e}")
+        startExpand, endExpand = time(), time()
+        while not hasExpanded:
+            try:
+                expandButton = WebDriverWait(driver, EXPAND_WAIT_TIME).until(
+                    EC.presence_of_element_located((By.XPATH, plusSignFirefox)))
+                expandButton.click()
+                hasExpanded = driver.find_element_by_xpath(minusSignFirefox)
+                endExpand = time()
+            except Exception as e:
+                print(
+                    f"Error: Expand button has failed to expand-- Time: {endExpand - startExpand} {e}")
+
     else:
         print("Sorry. Page is still loading..")
-    # try:
-    #     expandButton = WebDriverWait(driver, WAIT_TIME).until(
-    #         EC.presence_of_element_located((By.XPATH, expandPath)))
-    #     sleep(WAIT_TIME)  # Allow for the loader image to fade out in the browser
-
-    #     expandButton.click()
-    # except TimeoutException as te:
-    #     print(f"Timeout Error {te}")
-    #     pass
-    # except Exception as e:
-    #     print(f"Error: {e}")
-    #     pass
 
 
 def retrieveSearchResultsOnePage(driver):
@@ -186,6 +186,16 @@ def vehicleDetailPix():
     #   //img[starts-with(@id,'imageBack')]
     #   //img[starts-with(@id,'interior-image-desk')]
     #   //img[starts-with(@id,'auction-sheet-image')]
+
+    #   March 8, 2019
+    #   For additional info on vehicle:
+    #   //div[starts-with(@id,'VehicleDetail')]//div[contains(@class,'additional-image-container hide-in-mobile')]
+    #   //div[starts-with(@id,'VehicleDetail')]//div[contains(@class,'additional-image-container hide-in-mobile')]//img[@class='additional-image-size']
+    #   //img[starts-with(@id,'imageFront')]
+    #   if imagesize < 200 == image is not displayed.
+    #
+    #   For auction sheet:
+    #  //img[starts-with(@id,'auction-sheet-image')]
     return
 
 

@@ -63,15 +63,15 @@ def destruct_info(containerPath):
     chassisPrefixPath = ".//a[@class='text-red pull-left width-70per chassis-amkenya chassis-wd']"
     twoElementPath = ".//span[@class='pull-left width-55per']"
     equipPath = ".//div[@class='pull-left width-55per']/span[1]"
-    # transColorFuel = twoElement[0]
-    # ccMileage = twoElement[1]
     yorImagePath = ".//span[@class='text-left width-45per yor-in-thumbnail']//img"
     yorTextPath = ".//span[@class='text-left width-45per yor-in-thumbnail']"
 
     vehicleInfo = {}
 
+    # vehicleInfo["ibcnum"] = containerPath.find_element_by_xpath(
+    #     ibcNumPath).text
     vehicleInfo["ibcnum"] = containerPath.find_element_by_xpath(
-        ibcNumPath).text
+        ibcNumPath).text[-9:]
     vehicleInfo["yearMakeModel"] = containerPath.find_element_by_xpath(
         yearMakeModelPath).text
     vehicleInfo["chassisPrefix"] = containerPath.find_element_by_xpath(
@@ -119,7 +119,7 @@ def destruct_info_upd(containerPath):
     vehicleInfo = {}
 
     vehicleInfo["ibcnum"] = containerPath.find_element_by_xpath(
-        ibcNumPath).text
+        ibcNumPath).text[-9:]
     vehicleInfo["shuppin"] = containerPath.find_element_by_xpath(
         shuppinPath).text
     vehicleInfo["yearMakeModel"] = containerPath.find_element_by_xpath(
@@ -136,6 +136,7 @@ def destruct_info_upd(containerPath):
     try:
         yorTextImage = getImageFileSize(containerPath.find_element_by_xpath(
             yorImagePath).get_attribute('src'))
+        yorTextImage = containerPath.find_element_by_xpath(yorImagePath).get_attribute('src')
         # print("destruct image path begin..")
         # yorTextImage = getImageFileSize(containerPath.find_element_by_xpath(
         #     yorImagePath).get_attribute('src'))
@@ -145,34 +146,9 @@ def destruct_info_upd(containerPath):
     except:
         yorTextImage = containerPath.find_element_by_xpath(yorTextPath).text
         vehicleInfo["yorText"] = yorTextImage.split()[-1]
-        vehicleInfo["yorImage"] = 0
+        vehicleInfo["yorImage"] = -1
 
     return vehicleInfo
-
-
-def errorChecking(vehiclesList):
-    ibcnumKey = "ibcnum"
-    lookout = {"yearMakeModel": "unknown", "chassisPrefix": "unknown",
-               "transColorFuel": "| --", "equipment": "| --", "yor": "none", "yor": 6385}
-
-    vehicleErrors = []
-    for vehicle in vehiclesList:
-        for key in lookout:
-            errors = []
-            if type(lookout[key]) is str and type(vehicle[key]) is str:
-                if lookout[key].lower() in vehicle[key].lower():
-                    errors.append(vehicle[ibcnumKey])
-                    errors.append(f"This vehicle has no {key}")
-            else:
-                if key == "yor" and type(vehicle[key]) is int:
-                    if lookout[key] == vehicle[key]:
-                        errors.append(vehicle[ibcnumKey])
-                        errors.append(f"This vehicle has no {key}")
-            if errors:
-                vehicleErrors.append(errors)
-
-    return vehicleErrors
-
 
 def traverseKeys():
     return None
@@ -189,7 +165,7 @@ def errorCheckUpd(vehiclesList, lookout=errorList, reportLog=errorReturnValue, c
                     errors.append(f"This vehicle has {reportLog['jap_char']}")
                     count[key].append(vehicle[ibcnumKey])
             if key == 'yorImage':
-                if lookout[key] == vehicle[key]:
+                if lookout[key] == getImageFileSize(vehicle[key]):
                     count[key].append(vehicle[ibcnumKey])
                     errors.append(f"This vehicle has {reportLog[key]}")
             else:
@@ -249,7 +225,9 @@ def printToFile(duration, workingDirectory, fileName="testFile", contentList="")
         writer.write("\n")
         # writer.write(f"Data Collection lasted for {convert_time(duration):.1f} seconds.\n")
         writer.write(
-            f"Data Collection lasted for {convert_time(duration)} seconds.\n")
+            f"Data Collection lasted for {convert_time(duration[0])} seconds.\n")
+        writer.write(
+            f"Error checking completed within {convert_time(duration[1])} seconds.\n")
         writer.write(f"Finished checking on {getTimeStamp()} \n")
         writer.write(
             "#############################################################\n")
@@ -258,9 +236,11 @@ def printToFile(duration, workingDirectory, fileName="testFile", contentList="")
             value = contentList[content]
             if type(value) is list:
                 for entry in value:
-                    writer.write(f"{entry[-9:]},\n")
+                    # writer.write(f"{entry[-9:]},\n")
+                    writer.write(f"{entry},\n")
             else:
-                writer.write(f"{value[-9:]}\n")
+                # writer.write(f"{value[-9:]}\n")
+                writer.write(f"{value}\n")
             writer.write(
                 "-------------------------------------------------------------\n")
 
