@@ -33,13 +33,13 @@ driver.get(url)
 # userLogin(username, passcode, driver)
 userLoginIdirect(username, passcode, driver)
 
+# open_dropdownbox(driver)
+
 # a = auctionHouseSearch(driver)
 # auctionHouseClick(driver, a)
-open_dropdownbox(driver)
-
-unselect_AH(driver)
+# unselect_AH(driver)
 # conditionGrade()
 
-# searchFunc(driver)
+searchFunc(driver)
 
-# nextResults(driver)
+nextResults(driver)

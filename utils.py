@@ -294,6 +294,8 @@ def convert_to_text(web_element):
 
 
 def sorted_auctionHouses(raw_dict):
+    # for key, value in sorted(ah_units.items(), key=lambda items: items[-1]):
+    #     sorted_ah[key] = value
     return {key: value for key, value in sorted(raw_dict.items(), key=lambda items: items[-1])}
 
 

@@ -56,11 +56,11 @@ def auctionHouseClick(driver, auction_houses):
     #   dictionary with key = trimmed auction house names, and value = num_units
     ah_units = ah_table(trimmed_list, num_units)
 
-    print(ah_web_element)
+    # print(ah_web_element)
 
+    #   sorted auction houses depending on number of units
     sorted_ah = sorted_auctionHouses(ah_units)
-    # for key, value in sorted(ah_units.items(), key=lambda items: items[-1]):
-    #     sorted_ah[key] = value
+    print(f"Sorted Auction houses: {sorted_ah}")
 
     for auction_house in sorted_ah:
         sleep(.7)

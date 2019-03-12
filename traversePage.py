@@ -68,6 +68,10 @@ def nextResults(webdriver):
             nextPage.click()
     else:
         print("Traverse has reached the end.")
+        backToSearchPath = "//button[@class='btn btn-default margin-left-15px back-to-search']"
+        backToSearchButton = WebDriverWait(webdriver, WAIT_TIME).until(
+            EC.presence_of_element_located((By.XPATH, backToSearchPath)))
+        backToSearchButton.click()
         print()
 
     endDC = time()
