@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from time import sleep, time
 from userlogin import userLogin, userLoginIdirect
-from search import searchFunc, auctionHouseClick, auctionHouseSearch
+from search import searchFunc, auctionHouseClick, auctionHouseSearch, unselect_AH, open_dropdownbox
 from results import vehicleDetailInfo, retrieveSearchResultsOnePage, expandVehicleInfoIdirect, fetchIBCNum, fetchIBCandYOR, retrieveInfo, retrieveInfoUpd
 from utils import printList, destructure, printDict, errorCheckUpd
 from traversePage import nextResults
@@ -33,8 +33,11 @@ driver.get(url)
 # userLogin(username, passcode, driver)
 userLoginIdirect(username, passcode, driver)
 
-a = auctionHouseSearch(driver)
-auctionHouseClick(driver, a)
+# a = auctionHouseSearch(driver)
+# auctionHouseClick(driver, a)
+open_dropdownbox(driver)
+
+unselect_AH(driver)
 # conditionGrade()
 
 # searchFunc(driver)

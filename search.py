@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from time import sleep
 from errorCheck import hasNoResults
-from utils import convert_to_text, trimm_list, ah_table, trimm_list_v2
+from utils import convert_to_text, trimm_list, ah_table, trimm_list_v2, sorted_auctionHouses
 
 SLEEP_TIME: int = 10
 
@@ -18,40 +18,53 @@ SLEEP_TIME: int = 10
 #   driver.find_elements_by_xpath("")
 
 
-def auctionHouseSearch(driver):
-    # auctionPath = "//div[@id='auctionsitecontainer']/span/div[@class='btn-group']/ul[@class='multiselect-container dropdown-menu']/li/a/label"
-    # multiselect dropdown-toggle btn btn-default
-    #   //div[@class='btn-group open']//ul[@class='multiselect-container dropdown-menu']
-    auctionPath = "//div[@id='auctionsitecontainer']/span[@style='cursor: help; width: 100%;']/div[@class='btn-group open']/ul[@class='multiselect-container dropdown-menu']/li/a/label"
-    # auctionPath = "//div[@id='auctionsitecontainer']//a//label"
-    # auctionPath = "//div[@class='btn-group open']//ul[@class='multiselect-container dropdown-menu']//label"
-    # buttonPath = "//div[@id='auctionsitecontainer']/span[@style='cursor: help; width: 100%;']/div[@class='btn-group']"
+def open_dropdownbox(driver):
     buttonPath = "//span[@data-toggle='tooltip']//button"
-    # buttonPath = "button.multiselect.dropdown-toggle.btn.btn-default"
-    # buttonPath = "span.multiselect-selected-text"
-    # driver.find_element_by_xpath(buttonPath).click()
-
     auctionHouseButton = WebDriverWait(driver, SLEEP_TIME).until(
         EC.presence_of_element_located((By.XPATH, buttonPath)))
     auctionHouseButton.click()
-    # auctionHouses = driver.find_elements_by_xpath(auctionPath)
+
+
+def auctionHouseSearch(driver):
+    auctionPath = "//div[@id='auctionsitecontainer']/span[@style='cursor: help; width: 100%;']/div[@class='btn-group open']/ul[@class='multiselect-container dropdown-menu']/li/a/label"
+
     auctionHouses = WebDriverWait(driver, SLEEP_TIME).until(
         EC.presence_of_all_elements_located((By.XPATH, auctionPath)))
     return auctionHouses
 
 
+def unselect_AH(driver):
+    auctionActivePath = "//div[@id='auctionsitecontainer']/span[@style='cursor: help; width: 100%;']/div[@class='btn-group open']/ul[@class='multiselect-container dropdown-menu']/li[@class='active']/a/label"
+
+    active_AH = WebDriverWait(driver, SLEEP_TIME).until(
+        EC.presence_of_all_elements_located((By.XPATH, auctionActivePath)))
+
+    for ah in active_AH:
+        sleep(.4)
+        ah.click()
+
+
 def auctionHouseClick(driver, auction_houses):
+    #   list of auction houses
     converted_AH = convert_to_text(auction_houses)
+    #   trimmed names of auction houses
     trimmed_list = trimm_list(converted_AH, "-")
+    #   trimmed number of units from the list of auction houses
     num_units = trimm_list_v2(converted_AH, "-", "Units")
+    #   dictionary with key = trimmed auction house names, and value as the web element from auction_houses list
     ah_web_element = ah_table(trimmed_list, auction_houses)
+    #   dictionary with key = trimmed auction house names, and value = num_units
     ah_units = ah_table(trimmed_list, num_units)
+
     print(ah_web_element)
-    # print(ah_units.keys())
-    for key, value in sorted(ah_units.items(), key=lambda (k, v): (v, k)):
-        print(key, value)
-    for house in auction_houses:
-        house.click()
+
+    sorted_ah = sorted_auctionHouses(ah_units)
+    # for key, value in sorted(ah_units.items(), key=lambda items: items[-1]):
+    #     sorted_ah[key] = value
+
+    for auction_house in sorted_ah:
+        sleep(.7)
+        ah_web_element[auction_house].click()
 
 #   conditionButton = "//select[@name='conditiongradefrom']"
 #   driver.find_element_by_xpath(conditionPath).click()

@@ -293,6 +293,10 @@ def convert_to_text(web_element):
     return [element.text for element in web_element]
 
 
+def sorted_auctionHouses(raw_dict):
+    return {key: value for key, value in sorted(raw_dict.items(), key=lambda items: items[-1])}
+
+
 def trimm_list(input_list, element_to_trim):
     newlist = []
     for item in input_list:
@@ -306,7 +310,7 @@ def trimm_list_v2(input_list, left, right):
     for item in input_list:
         left_index = item.index(left)
         right_index = item.find(right)
-        newlist.append(item[left_index+1:right_index].strip())
+        newlist.append(int(item[left_index+1:right_index].strip()))
     return newlist
 
 
