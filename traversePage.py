@@ -7,6 +7,8 @@ from time import sleep, time
 from utils import errorCheckUpd, printErrors, dictErrors, getAuctionHouse, printToFile, createDirectory, convert_time
 from results import expandVehicleInfoIdirect, retrieveInfoTest, retrieveInfoUpd
 
+from errorCheck import hasNoResults
+
 import asyncio
 WAIT_TIME: int = 10
 SLEEP_TIME: int = 5
@@ -34,7 +36,11 @@ def nextResults(webdriver):
 
         expandVehicleInfoIdirect(webdriver)
 
-        # getVehicleDetail:
+        results = hasNoResults(webdriver)
+        if results:
+            print("No results displayed..")
+            isEnd = True
+            break
 
         if not auctionHouseName:
             auctionHouseName = getAuctionHouse(webdriver)
@@ -67,7 +73,7 @@ def nextResults(webdriver):
     endDC = time()
 
     timeDC = endDC-startDC
-    print(f"Finished collecting data in {timeDC} seconds.")
+    print(f"Finished collecting data in {convert_time(timeDC)} seconds.")
 
     print(f"Will now check for errors..")
     print()

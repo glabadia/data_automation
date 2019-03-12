@@ -134,12 +134,10 @@ def destruct_info_upd(containerPath):
     yorTextImage = "None"
 
     try:
+        # print("destruct image path begin..")
+        # yorTextImage = containerPath.find_element_by_xpath(yorImagePath).get_attribute('src')
         yorTextImage = getImageFileSize(containerPath.find_element_by_xpath(
             yorImagePath).get_attribute('src'))
-        yorTextImage = containerPath.find_element_by_xpath(yorImagePath).get_attribute('src')
-        # print("destruct image path begin..")
-        # yorTextImage = getImageFileSize(containerPath.find_element_by_xpath(
-        #     yorImagePath).get_attribute('src'))
         vehicleInfo["yorText"] = ""
         vehicleInfo["yorImage"] = yorTextImage
 
@@ -149,6 +147,7 @@ def destruct_info_upd(containerPath):
         vehicleInfo["yorImage"] = -1
 
     return vehicleInfo
+
 
 def traverseKeys():
     return None
@@ -165,7 +164,8 @@ def errorCheckUpd(vehiclesList, lookout=errorList, reportLog=errorReturnValue, c
                     errors.append(f"This vehicle has {reportLog['jap_char']}")
                     count[key].append(vehicle[ibcnumKey])
             if key == 'yorImage':
-                if lookout[key] == getImageFileSize(vehicle[key]):
+                # if lookout[key] == getImageFileSize(vehicle[key]):
+                if lookout[key] == vehicle[key]:
                     count[key].append(vehicle[ibcnumKey])
                     errors.append(f"This vehicle has {reportLog[key]}")
             else:
@@ -287,3 +287,31 @@ def convert_time(time_sec):
             return_val += "minutes "
         return f"{return_val}and {remain_time:.1f}"
     return f"{remain_time:.1f}"
+
+
+def convert_to_text(web_element):
+    return [element.text for element in web_element]
+
+
+def trimm_list(input_list, element_to_trim):
+    newlist = []
+    for item in input_list:
+        endpoint_index = item.index(element_to_trim)
+        newlist.append(item[:endpoint_index].strip())
+    return newlist
+
+
+def trimm_list_v2(input_list, left, right):
+    newlist = []
+    for item in input_list:
+        left_index = item.index(left)
+        right_index = item.find(right)
+        newlist.append(item[left_index+1:right_index].strip())
+    return newlist
+
+
+def ah_table(key_list, value_list):
+    hash_table = {}
+    for k, v in zip(key_list, value_list):
+        hash_table[k] = v
+    return hash_table

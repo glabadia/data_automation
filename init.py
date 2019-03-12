@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from time import sleep, time
 from userlogin import userLogin, userLoginIdirect
-from search import searchFunc
+from search import searchFunc, auctionHouseClick, auctionHouseSearch
 from results import vehicleDetailInfo, retrieveSearchResultsOnePage, expandVehicleInfoIdirect, fetchIBCNum, fetchIBCandYOR, retrieveInfo, retrieveInfoUpd
 from utils import printList, destructure, printDict, errorCheckUpd
 from traversePage import nextResults
@@ -19,11 +19,11 @@ firefox_driver = r"E:\personal\program\geckodriver"
 username = "glabadia"
 passcode = "Optiplex3050!"
 
-driver = webdriver.Firefox(executable_path=firefox_driver)
+# driver = webdriver.Firefox(executable_path=firefox_driver)
 # driver = webdriver.Chrome(executable_path=home_driver)
 # driver = webdriver.Chrome(executable_path=r"C:\Users\glabadia\Desktop\VS\selenium drivers\Chrome\chromedriver")
-# driver = webdriver.Firefox(
-#     executable_path=r"C:\Users\glabadia\Desktop\VS\selenium drivers\Firefox\geckodriver")
+driver = webdriver.Firefox(
+    executable_path=r"C:\Users\glabadia\Desktop\VS\selenium drivers\Firefox\geckodriver")
 driver.get(url)
 
 ###
@@ -33,25 +33,10 @@ driver.get(url)
 # userLogin(username, passcode, driver)
 userLoginIdirect(username, passcode, driver)
 
-# a = auctionHouseSearch()
-# auctionHouseClick(a)
+a = auctionHouseSearch(driver)
+auctionHouseClick(driver, a)
 # conditionGrade()
 
-searchFunc(driver)
+# searchFunc(driver)
 
-# getAllInfo(driver)
-nextResults(driver)
-# expandVehicleInfoIdirect(driver)
-# start = time()
-# infoList = retrieveInfoUpd(driver)
-# end = time()
-
-# printDict(infoList)
-# print(f"Finished in {end-start} seconds.")
-
-# start = time()
-# checkErrorList = errorCheckUpd(infoList)
-# end = time()
-# print(checkErrorList)
-# print(f"There are {len(checkErrorList)} errors found.")
-# print(f"Finished in {end-start} seconds.")
+# nextResults(driver)

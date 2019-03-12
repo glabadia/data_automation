@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from utils import printList, destruct_info, destruct_info_upd, createDirectory
 from time import sleep, time
 from search import calibrateSearch
+from errorCheck import hasNoResults
 EXPAND_WAIT_TIME: int = 50
 WAIT_TIME: int = 25
 SLEEP_TIME: int = 10
@@ -54,6 +55,10 @@ def expandVehicleInfoIdirect(driver):
         print("Loader gone!")
         startExpand, endExpand = time(), time()
         while not hasExpanded:
+            # check if No search results exist.
+            if hasNoResults(driver):
+                print("No Search results triggered in search.")
+                break
             try:
                 expandButton = WebDriverWait(driver, EXPAND_WAIT_TIME).until(
                     EC.presence_of_element_located((By.XPATH, plusSignFirefox)))

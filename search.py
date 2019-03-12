@@ -4,6 +4,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
 from time import sleep
+from errorCheck import hasNoResults
+from utils import convert_to_text, trimm_list, ah_table, trimm_list_v2
 
 SLEEP_TIME: int = 10
 
@@ -21,15 +23,33 @@ def auctionHouseSearch(driver):
     # multiselect dropdown-toggle btn btn-default
     #   //div[@class='btn-group open']//ul[@class='multiselect-container dropdown-menu']
     auctionPath = "//div[@id='auctionsitecontainer']/span[@style='cursor: help; width: 100%;']/div[@class='btn-group open']/ul[@class='multiselect-container dropdown-menu']/li/a/label"
+    # auctionPath = "//div[@id='auctionsitecontainer']//a//label"
     # auctionPath = "//div[@class='btn-group open']//ul[@class='multiselect-container dropdown-menu']//label"
-    buttonPath = "//div[@id='auctionsitecontainer']/span[@style='cursor: help; width: 100%;']/div[@class='btn-group']"
-    # buttonPath = "//span[@data-toggle='tooltip']//button[@title='None selected']"
-    driver.find_element_by_xpath(buttonPath).click()
-    auctionHouses = driver.find_elements_by_xpath(auctionPath)
+    # buttonPath = "//div[@id='auctionsitecontainer']/span[@style='cursor: help; width: 100%;']/div[@class='btn-group']"
+    buttonPath = "//span[@data-toggle='tooltip']//button"
+    # buttonPath = "button.multiselect.dropdown-toggle.btn.btn-default"
+    # buttonPath = "span.multiselect-selected-text"
+    # driver.find_element_by_xpath(buttonPath).click()
+
+    auctionHouseButton = WebDriverWait(driver, SLEEP_TIME).until(
+        EC.presence_of_element_located((By.XPATH, buttonPath)))
+    auctionHouseButton.click()
+    # auctionHouses = driver.find_elements_by_xpath(auctionPath)
+    auctionHouses = WebDriverWait(driver, SLEEP_TIME).until(
+        EC.presence_of_all_elements_located((By.XPATH, auctionPath)))
     return auctionHouses
 
 
-def auctionHouseClick(auction_houses, driver):
+def auctionHouseClick(driver, auction_houses):
+    converted_AH = convert_to_text(auction_houses)
+    trimmed_list = trimm_list(converted_AH, "-")
+    num_units = trimm_list_v2(converted_AH, "-", "Units")
+    ah_web_element = ah_table(trimmed_list, auction_houses)
+    ah_units = ah_table(trimmed_list, num_units)
+    print(ah_web_element)
+    # print(ah_units.keys())
+    for key, value in sorted(ah_units.items(), key=lambda (k, v): (v, k)):
+        print(key, value)
     for house in auction_houses:
         house.click()
 
@@ -54,8 +74,10 @@ def conditionGrade(driver):
 def searchFunc(driver, chassisNum=""):
     sleep(5)    # delay for 3 seconds to load more info
 
-    ibcTextBoxPath = "input.form-control.IDVehicle.ibcnumber.isnumber"
-    ibcTextBox = driver.find_element_by_css_selector(ibcTextBoxPath)
+    # ibcTextBoxPath = "input.form-control.IDVehicle.ibcnumber.isnumber"
+    # ibcTextBox = driver.find_element_by_css_selector(ibcTextBoxPath)
+    ibcTextBoxPath = "//div[@class='form-adjust width-61per']//input[@name='idvehicle']"
+    ibcTextBox = driver.find_element_by_xpath(ibcTextBoxPath)
     ibcTextBox.clear()
 
     if chassisNum:
@@ -73,9 +95,11 @@ def searchFunc(driver, chassisNum=""):
 
     sleep(10)  # regular value is 3
     # check if there are no results
-    noResultsPath = "div.no-result-message "
-    noResultsCheck = True if driver.find_element_by_css_selector(
-        noResultsPath).get_attribute("style") == "display: none;" else calibrateSearch(driver)
+    # noResultsPath = "div.no-result-message "
+    # noResultsCheck = True if driver.find_element_by_css_selector(
+    #     noResultsPath).get_attribute("style") == "display: none;" else calibrateSearch(driver)
+    noResultsCheck = calibrateSearch(
+        driver) if hasNoResults(driver) else True
     print(noResultsCheck)
 
 
