@@ -57,47 +57,6 @@ def destructure(vehicles, ibcNums):
 # exec(open(r"C:\Users\glabadia\Desktop\VS\scripts\dataCollectionFiles\init.py").read())
 
 
-def destruct_info(containerPath):
-    ibcNumPath = ".//span[starts-with(@id,'IBCNum')]"
-    yearMakeModelPath = ".//span[@class='text-bold pull-left width-55per']"
-    chassisPrefixPath = ".//a[@class='text-red pull-left width-70per chassis-amkenya chassis-wd']"
-    twoElementPath = ".//span[@class='pull-left width-55per']"
-    equipPath = ".//div[@class='pull-left width-55per']/span[1]"
-    yorImagePath = ".//span[@class='text-left width-45per yor-in-thumbnail']//img"
-    yorTextPath = ".//span[@class='text-left width-45per yor-in-thumbnail']"
-
-    vehicleInfo = {}
-
-    # vehicleInfo["ibcnum"] = containerPath.find_element_by_xpath(
-    #     ibcNumPath).text
-    vehicleInfo["ibcnum"] = containerPath.find_element_by_xpath(
-        ibcNumPath).text[-9:]
-    vehicleInfo["yearMakeModel"] = containerPath.find_element_by_xpath(
-        yearMakeModelPath).text
-    vehicleInfo["chassisPrefix"] = containerPath.find_element_by_xpath(
-        chassisPrefixPath).text.split()[-1]
-    vehicleInfo["transColorFuel"] = containerPath.find_elements_by_xpath(twoElementPath)[
-        0].text
-    vehicleInfo["equipment"] = containerPath.find_element_by_xpath(
-        equipPath).text
-
-    yorTextImage = "None"
-
-    try:
-        # yorTextImage = containerPath.find_element_by_xpath(
-        #     yorImagePath).get_attribute('src')
-        print("destruct image size begin..")
-        yorTextImage = getImageFileSize(containerPath.find_element_by_xpath(
-            yorImagePath).get_attribute('src'))
-
-    except:
-        yorTextImage = containerPath.find_element_by_xpath(yorTextPath).text
-
-    vehicleInfo["yor"] = yorTextImage
-
-    return vehicleInfo
-
-
 def getAuctionHouse(dc_driver):
     auctionHousePath = "//span[starts-with(@id,'IBCNum')]"
     auctionHouseContainer = WebDriverWait(dc_driver, SLEEP_TIME).until(
@@ -134,10 +93,10 @@ def destruct_info_upd(containerPath):
     yorTextImage = "None"
 
     try:
-        # print("destruct image path begin..")
-        # yorTextImage = containerPath.find_element_by_xpath(yorImagePath).get_attribute('src')
-        yorTextImage = getImageFileSize(containerPath.find_element_by_xpath(
-            yorImagePath).get_attribute('src'))
+        yorTextImage = containerPath.find_element_by_xpath(
+            yorImagePath).get_attribute('src')
+        # yorTextImage = getImageFileSize(containerPath.find_element_by_xpath(
+        #     yorImagePath).get_attribute('src'))
         vehicleInfo["yorText"] = ""
         vehicleInfo["yorImage"] = yorTextImage
 
@@ -164,8 +123,9 @@ def errorCheckUpd(vehiclesList, lookout=errorList, reportLog=errorReturnValue, c
                     errors.append(f"This vehicle has {reportLog['jap_char']}")
                     count[key].append(vehicle[ibcnumKey])
             if key == 'yorImage':
-                # if lookout[key] == getImageFileSize(vehicle[key]):
-                if lookout[key] == vehicle[key]:
+                # fast search
+                if lookout[key] == getImageFileSize(vehicle[key]):
+                    # if lookout[key] == vehicle[key]: #standard search
                     count[key].append(vehicle[ibcnumKey])
                     errors.append(f"This vehicle has {reportLog[key]}")
             else:

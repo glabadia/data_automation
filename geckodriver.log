@@ -5484,3 +5484,57 @@ JavaScript warning: http://idirect.ibcjapan.co.jp/Scripts/idirect.js?ver=0225201
 [GPU 
 ###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
 
+1552405626020	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Carlo\\AppData\\Local\\Temp\\rust_mozprofile.qtFJdZ2M6Y6G"
+1552405629255	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid host permission: resource://pdf.js/
+1552405629255	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid host permission: about:reader*
+1552405635394	Marionette	INFO	Listening on port 63417
+1552405635672	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: http://www.ibcjapan.co.jp/Scripts/MultipleSlider.js, line 35: TypeError: slides[(slideIndex - 1)] is undefined
+JavaScript error: http://www.ibcjapan.co.jp/Scripts/MultipleSlider.js, line 35: TypeError: slides[(slideIndex - 1)] is undefined
+JavaScript warning: http://idirect.ibcjapan.co.jp/Scripts/idirect.js?ver=022520191441, line 1154: unreachable code after return statement
+JavaScript warning: http://idirect.ibcjapan.co.jp/Scripts/idirect.js?ver=022520191441, line 3847: unreachable code after return statement
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:188:13
+
+JavaScript warning: http://idirect.ibcjapan.co.jp/Scripts/idirect.js?ver=022520191441, line 1154: unreachable code after return statement
+1552405857363	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+bail@chrome://marionette/content/sync.js:196:64
+[Child 2176, Chrome_ChildThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 332
+[Child 2176, Chrome_ChildThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ip[Child 10132, Chrome_ChildThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 332
+[Child 10132,[Child 9668, Chrome_ChildThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 332
+[Child 9668, Chrome_ChildThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 332
+1552406007256	Marionette	INFO	Stopped listening on port 63417
+[GPU 93
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1552406068198	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Carlo\\AppData\\Local\\Temp\\rust_mozprofile.GstvDq1hd2Fi"
+1552406068638	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid host permission: resource://pdf.js/
+1552406068639	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid host permission: about:reader*
+1552406071792	Marionette	INFO	Listening on port 64742
+1552406072060	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: http://www.ibcjapan.co.jp/Scripts/MultipleSlider.js, line 35: TypeError: slides[(slideIndex - 1)] is undefined
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:188:13
+
+JavaScript warning: http://idirect.ibcjapan.co.jp/Scripts/idirect.js?ver=022520191441, line 1154: unreachable code after return statement
+JavaScript warning: http://idirect.ibcjapan.co.jp/Scripts/idirect.js?ver=022520191441, line 3847: unreachable code after return statement
+JavaScript warning: http://idirect.ibcjapan.co.jp/Scripts/idirect.js?ver=022520191441, line 1154: unreachable code after return statement
+[Parent 2972, Gecko_IOThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 332
+[Child 10000, Chrome_ChildThread] WARNING: pipe error: 232: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 493
+[Child 10000, Chrome_ChildThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 332
+[Child 10000, C[Parent 2972, Gecko_IOThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 332
+[Child 7248, Chrome_ChildThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 332
+[Child 7248, Chrome1552406433373	Marionette	INFO	Stopped listening on port 64742
+[GPU
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
