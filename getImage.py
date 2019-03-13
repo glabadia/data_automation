@@ -31,7 +31,11 @@ urlList = [
     "http://138.201.52.236/imgs/dyJ2O5ZnVGaLpjCgSr4JtiXYvulKsUtEeQNQigrh7z",
     "http://138.201.52.234/imgs/dyJ2O5ZGYxX3QVFVucXdYkUoGQvH3jVfVM7DukZlTg",
     "http://img1.jcarinfo.net/gixlarge.php?&op=CRKqIaIKIagKIltNg5IqcltcAYS076UHh53sImetWQe*Ia1sIQeUIut6COn*Cfd1MRXDif4HLbAn7SV8AYYqV1SIY6Yq8B0dLvVsh5nr4K&time=201903082320",
-    "http://img3.jcarinfo.net/gix.php?&amp;op=4BIqIaIKIagKIltNg5IqcltcAYS076UHh53sImetWQe*Ia1sIQeXI8t6COn*Cfd1MRXDif4HLbAn7SV8AYYqV1SIY6Yq8B0dLvVsh5nr4K&amp;time=201903082340"
+    "http://img3.jcarinfo.net/gix.php?&amp;op=4BIqIaIKIagKIltNg5IqcltcAYS076UHh53sImetWQe*Ia1sIQeXI8t6COn*Cfd1MRXDif4HLbAn7SV8AYYqV1SIY6Yq8B0dLvVsh5nr4K&amp;time=201903082340",
+    "http://img1.jcarinfo.net/gix.php?&op=ifPqIaIKIagKIltNg5Iqclta2Y3s25SU7*PKIQ1KI*3*7*kKIaY*7bVJCfdNhFVXLRXUM5SqMRYqAS.AV8tO2YtQV8tch3XsMOGuCRUB&time=201903131640&inya=true",
+    "http://img1.jcarinfo.net/gix.php?&op=hvIqIaIKIagKIltNg5Iqclta2Y3s25SU7*PKIQ1KI*3*7*kKIaY*7bVJCfdNhFVXLRXUM5SqMRYqAS.AV8tO2YtQV8tch3XsMOGuCRUB&time=201903131640",
+    "http://138.201.52.234/imgs/9I3PnMMQPlsKJY7SMtAJoQUpPupIhJUjEujYykXmoxWDoAi-ETxGBvgdwmvSwT-7",
+    "http://img1.jcarinfo.net/gix.php?&op=ifPqIaIKIagKIltNg5IqcltcAYS076n*COnpgfMH7*PKIQ1KI*3*7*3KIQeqMOHNhFn*4bADLfnFgRtX48tYYnAS7340QSdS7S0uL6NHhOSr&time=20190313170&inya=true"
 ]
 # url = "http://138.201.52.234/imgs/dyJ2O5ZnVGaLpjCgSr4JtiXYvulKsUtDrHbHJEvczM"
 # url = "http://138.201.52.236/imgs/dyJ2O5ZnVGaLpjCgSr4JtiXYvulKsUtEeQNQigrh7z"
@@ -46,3 +50,14 @@ def getImageFileSize(link):
 
 for url in urlList:
     print(getImageFileSize(url))
+
+
+def sample_function():
+    x = 433
+    if 900 > x > 15:
+        print("true")
+    else:
+        print("false")
+
+
+sample_function()

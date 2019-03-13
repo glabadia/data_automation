@@ -59,10 +59,13 @@ def destructure(vehicles, ibcNums):
 
 def getAuctionHouse(dc_driver):
     auctionHousePath = "//span[starts-with(@id,'IBCNum')]"
-    auctionHouseContainer = WebDriverWait(dc_driver, SLEEP_TIME).until(
-        EC.presence_of_element_located((By.XPATH, auctionHousePath)))
+    try:
+        auctionHouseContainer = WebDriverWait(dc_driver, SLEEP_TIME).until(
+            EC.presence_of_element_located((By.XPATH, auctionHousePath))).text[:-10]
+    except Exception as e:
+        auctionHouseContainer = f"Dummy Auction house{e}"
     # auctionHouseContainer = dc_driver.find_element_by_xpath(auctionHousePath)
-    return auctionHouseContainer.text[:-10]
+    return auctionHouseContainer
 
 
 def destruct_info_upd(containerPath):
@@ -93,10 +96,10 @@ def destruct_info_upd(containerPath):
     yorTextImage = "None"
 
     try:
-        yorTextImage = containerPath.find_element_by_xpath(
-            yorImagePath).get_attribute('src')
-        # yorTextImage = getImageFileSize(containerPath.find_element_by_xpath(
-        #     yorImagePath).get_attribute('src'))
+        # yorTextImage = containerPath.find_element_by_xpath(
+        #     yorImagePath).get_attribute('src')
+        yorTextImage = getImageFileSize(containerPath.find_element_by_xpath(
+            yorImagePath).get_attribute('src'))
         vehicleInfo["yorText"] = ""
         vehicleInfo["yorImage"] = yorTextImage
 
@@ -124,8 +127,8 @@ def errorCheckUpd(vehiclesList, lookout=errorList, reportLog=errorReturnValue, c
                     count[key].append(vehicle[ibcnumKey])
             if key == 'yorImage':
                 # fast search
-                if lookout[key] == getImageFileSize(vehicle[key]):
-                    # if lookout[key] == vehicle[key]: #standard search
+                # if lookout[key] == getImageFileSize(vehicle[key]):
+                if lookout[key] == vehicle[key]:  # standard search
                     count[key].append(vehicle[ibcnumKey])
                     errors.append(f"This vehicle has {reportLog[key]}")
             else:
@@ -178,6 +181,7 @@ def getTimeStamp():
 def printToFile(duration, workingDirectory, fileName="testFile", contentList=""):
     import os
     os.chdir(workingDirectory)
+    dc_time, check_time = duration
     with open(f"{fileName}.txt", "w") as writer:
         writer.write(
             "#############################################################\n")
@@ -185,9 +189,9 @@ def printToFile(duration, workingDirectory, fileName="testFile", contentList="")
         writer.write("\n")
         # writer.write(f"Data Collection lasted for {convert_time(duration):.1f} seconds.\n")
         writer.write(
-            f"Data Collection lasted for {convert_time(duration[0])} seconds.\n")
+            f"Data Collection lasted for {convert_time(dc_time)} seconds.\n")
         writer.write(
-            f"Error checking completed within {convert_time(duration[1])} seconds.\n")
+            f"Error checking completed within {convert_time(check_time)} seconds.\n")
         writer.write(f"Finished checking on {getTimeStamp()} \n")
         writer.write(
             "#############################################################\n")

@@ -1,13 +1,22 @@
 import requests
+from time import sleep
 
 #   Unknown YOR List:
-#   6385 bytes
+#   6385 bytes = image not available
+#   2151 bytes = no foto
+#   900 > x > 15 = YOR not clear
+
+#   make a function that traverses through a number of operations, e.g.
+#   if imageFileSize = 6385, then set as 'YOR image not available status', and break, else
+#   if imageFileSize 900 > x > 15 = YOR not clear, then set as 'YOR image not clear/visible', and break, else
+#   return -1 
 
 
 def getImageFileSize(link):
     # imgLink = requests.get(link).text
     # print(len(imgLink))
     # return len(imgLink)
+    # sleep(1)
     return -1 if link == -1 else len(requests.get(link).text)
     # print(f"Image size: {len()/1024} bytes")
 

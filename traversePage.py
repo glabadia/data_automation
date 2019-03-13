@@ -37,13 +37,16 @@ def nextResults(webdriver):
         expandVehicleInfoIdirect(webdriver)
 
         results = hasNoResults(webdriver)
-        if results:
-            print("No results displayed..")
-            isEnd = True
-            break
 
         if not auctionHouseName:
             auctionHouseName = getAuctionHouse(webdriver)
+
+        if results:
+            print("No results displayed..")
+            print(f"Data collection for [{auctionHouseName}]: incomplete")
+            back_to_search(webdriver)
+            isEnd = True
+            break
 
         start = time()
         infoList.extend(retrieveInfoUpd(webdriver))
@@ -59,6 +62,7 @@ def nextResults(webdriver):
         if nextPage.text == "»":
             isEnd = True
             print("Traverse reached last page..")
+            print(f"Data collection of [{auctionHouseName}]: completed")
             print()
         else:
             print(
@@ -67,11 +71,8 @@ def nextResults(webdriver):
             print(f"Next is [Page {nextPage.text}]..")
             nextPage.click()
     else:
-        print("Traverse has reached the end.")
-        backToSearchPath = "//button[@class='btn btn-default margin-left-15px back-to-search']"
-        backToSearchButton = WebDriverWait(webdriver, WAIT_TIME).until(
-            EC.presence_of_element_located((By.XPATH, backToSearchPath)))
-        backToSearchButton.click()
+        print("Traverse has been stopped..")
+        back_to_search(webdriver)
         print()
 
     endDC = time()
@@ -94,6 +95,17 @@ def nextResults(webdriver):
                 auctionHouseName, populate_errors)
 
     print(f"Error checking done in {convert_time(timeEC)} seconds.")
+
+
+def back_to_search(webdriver):
+    backToSearchPath = "//button[@class='btn btn-default margin-left-15px back-to-search']"
+    backToSearchButton = WebDriverWait(webdriver, WAIT_TIME).until(
+        EC.presence_of_element_located((By.XPATH, backToSearchPath)))
+    for i in range(4, 0, -1):
+        sleep(1)
+        print(f"Returning in {i}..")
+        i -= 1
+    backToSearchButton.click()
 
     # check if //div[@id='loader'][contains(@style,'display: block;')] wait until display: none
     #   loader style --> display: block; top: 0px; bottom: 0px; left: 0px; right: 0px; position: fixed; background-color: rgba(255, 255, 255, 0.7); overflow: hidden; outline: none 0px; z-index: 999; text-align: center; margin-left: -15px; margin-right: -15px;

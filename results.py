@@ -38,6 +38,7 @@ def expandVehicleInfoIdirect(driver):
     plusSignFirefox = "//i[@class='glyphicon text-left expand-icon glyphicon-plus-sign']"
     minusSignFirefox = "//i[@class='glyphicon text-left expand-icon glyphicon-minus-sign']"
     print("Waiting to populate data..")
+    print()
 
     # sleep(SLEEP_TIME)  # Allow for the loader image to fade out in the browser
     isLoaderPresent = False
@@ -53,6 +54,7 @@ def expandVehicleInfoIdirect(driver):
     if isLoaderPresent:
         hasExpanded = False
         print("Loader gone!")
+        print()
         startExpand, endExpand = time(), time()
         while not hasExpanded:
             # check if No search results exist.
@@ -80,7 +82,7 @@ def retrieveSearchResultsOnePage(driver):
     #   the info beside the main picture
     vehiclePath = "//div[@class='data-container']"
     vehicleInfoList = driver.find_elements_by_xpath(vehiclePath)
-    # printList(vehicleInfoList)
+    # printList(vehicleInfoList)No Search results triggered in search.
     return vehicleInfoList
 
 
@@ -89,7 +91,7 @@ def retrieveInfo(driver):
     vehicleInfoPath = "//div[@class='col-lg-12 search-result-container']"
     containerSelectors = driver.find_elements_by_xpath(vehicleInfoPath)
     for container in containerSelectors:
-        allVehicles.append(destruct_info(container))
+        allVehicles.append(destruct_info_upd(container))
 
     return allVehicles
 
