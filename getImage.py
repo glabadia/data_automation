@@ -52,12 +52,12 @@ for url in urlList:
     print(getImageFileSize(url))
 
 
-def sample_function():
-    x = 433
-    if 900 > x > 15:
-        print("true")
-    else:
-        print("false")
+def sample_function(x=433):
+    # if 900 > x > 15:
+    #     print("true")
+    # else:
+    #     print("false")
+    return 900 > x > 15
 
 
-sample_function()
+print(sample_function())

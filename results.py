@@ -3,7 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from utils import printList, destruct_info_upd, createDirectory
+from utils import printList, destruct_info_upd, createDirectory, deconstruct_details
 from time import sleep, time
 from search import calibrateSearch
 from errorCheck import hasNoResults
@@ -30,49 +30,65 @@ def expandVehicleInfo(driver):
 
 def expandVehicleInfoIdirect(driver):
     # sleep for 7-15 seconds to allow the browser to populate data, and fill the div with desired results.
-    # sleep(20)
     # expandPath = "//div[@class='visible-md visible-lg right-expand-all']"
-    loaderOnInvisible = "//div[@id='loader'][contains(@style,'display: none;')]"
-    # plusSignExpand = "i.glyphicon.text-left.expand-icon.glyphicon-plus-sign"
     # firefox
-    plusSignFirefox = "//i[@class='glyphicon text-left expand-icon glyphicon-plus-sign']"
-    minusSignFirefox = "//i[@class='glyphicon text-left expand-icon glyphicon-minus-sign']"
     print("Waiting to populate data..")
     print()
 
     # sleep(SLEEP_TIME)  # Allow for the loader image to fade out in the browser
     isLoaderPresent = False
-    startloader, endLoader = time(), time()
-    try:
-        isLoaderPresent = WebDriverWait(driver, WAIT_TIME).until(
-            EC.presence_of_element_located((By.XPATH, loaderOnInvisible)))
-        endLoader = time()
-    except Exception as e:
-        print(
-            f"Error: Loader is still present -- Time: {endLoader - startloader} {e}")
+    # while not isLoaderPresent:
+    isLoaderPresent = waitLoader(driver)
 
     if isLoaderPresent:
         hasExpanded = False
         print("Loader gone!")
         print()
-        startExpand, endExpand = time(), time()
+        # startExpand, endExpand = time(), time()
         while not hasExpanded:
             # check if No search results exist.
             if hasNoResults(driver):
                 print("No Search results triggered in search.")
                 break
-            try:
-                expandButton = WebDriverWait(driver, EXPAND_WAIT_TIME).until(
-                    EC.presence_of_element_located((By.XPATH, plusSignFirefox)))
-                expandButton.click()
-                hasExpanded = driver.find_element_by_xpath(minusSignFirefox)
-                endExpand = time()
-            except Exception as e:
-                print(
-                    f"Error: Expand button has failed to expand-- Time: {endExpand - startExpand} {e}")
+            hasExpanded = expandButton(driver)
 
     else:
         print("Sorry. Page is still loading..")
+
+
+def expandButton(driver):
+    startExpand = time()
+    plusSignFirefox = "//i[@class='glyphicon text-left expand-icon glyphicon-plus-sign']"
+    minusSignFirefox = "//i[@class='glyphicon text-left expand-icon glyphicon-minus-sign']"
+    try:
+        expand = WebDriverWait(driver, EXPAND_WAIT_TIME).until(
+            EC.presence_of_element_located((By.XPATH, plusSignFirefox)))
+        expand.click()
+        hasExpanded = driver.find_element_by_xpath(minusSignFirefox)
+        print(f"Expansion Success! {(time() - startExpand):.1f} seconds.")
+        return hasExpanded
+
+    except Exception as e:
+        endExpand = time() - startExpand
+        print(
+            f"Error: Expand button has failed to expand-- Time: {endExpand:.1f} seconds {e}")
+        return False
+
+
+def waitLoader(driver):
+    startloader = time()
+    loaderOnInvisible = "//div[@id='loader'][contains(@style,'display: none;')]"
+    isLoaderPresent = False
+    try:
+        isLoaderPresent = WebDriverWait(driver, WAIT_TIME).until(
+            EC.presence_of_element_located((By.XPATH, loaderOnInvisible)))
+        print(f"Loader gone in {(time() - startloader):.1f} seconds.")
+        return isLoaderPresent
+    except Exception as e:
+        endLoader = time() - startloader
+        print(
+            f"Error: Loader is still present -- Time: {endLoader:.1f} seconds {e}")
+        return False
 
 
 def retrieveSearchResultsOnePage(driver):
@@ -204,6 +220,19 @@ def vehicleDetailPix():
     #   For auction sheet:
     #  //img[starts-with(@id,'auction-sheet-image')]
     return
+
+
+def retrieveInfoDetail(driver):
+    vehicleDetails = []
+    vehicleDetailPath = "//div[starts-with(@id,'VehicleDetail')]"
+    containerDetailList = WebDriverWait(driver, WAIT_TIME).until(
+        EC.presence_of_all_elements_located((By.XPATH, vehicleDetailPath)))
+    for container in containerDetailList:
+        vehicleDetails.append(deconstruct_details(container))
+
+    return vehicleDetails
+    # return containerDetailList
+    # for loop traverse
 
 
 def yorImages():

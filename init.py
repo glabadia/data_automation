@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from time import sleep, time
 from userlogin import userLogin, userLoginIdirect
 from search import searchFunc, auctionHouseClick, auctionHouseSearch, unselect_AH, open_dropdownbox
-from results import vehicleDetailInfo, retrieveSearchResultsOnePage, expandVehicleInfoIdirect, fetchIBCNum, fetchIBCandYOR, retrieveInfo, retrieveInfoUpd
+from results import expandVehicleInfoIdirect, retrieveInfoUpd, retrieveInfoDetail, expandButton, waitLoader
 from utils import printList, destructure, printDict, errorCheckUpd
 from traversePage import nextResults
 from dataScraping import getAllInfo
@@ -41,5 +41,16 @@ userLoginIdirect(username, passcode, driver)
 # conditionGrade()
 
 searchFunc(driver)
+
+# isLoader = waitLoader(driver)
+# expand = False
+# while not expand:
+#     expand = expandButton(driver)
+
+# upd = retrieveInfoUpd(driver)
+# print(len(upd))
+
+# detail = retrieveInfoDetail(driver)
+# printDict(detail)
 
 nextResults(driver)

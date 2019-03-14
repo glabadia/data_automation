@@ -9,7 +9,7 @@ from time import sleep
 #   make a function that traverses through a number of operations, e.g.
 #   if imageFileSize = 6385, then set as 'YOR image not available status', and break, else
 #   if imageFileSize 900 > x > 15 = YOR not clear, then set as 'YOR image not clear/visible', and break, else
-#   return -1 
+#   return -1
 
 
 def getImageFileSize(link):
@@ -19,6 +19,14 @@ def getImageFileSize(link):
     # sleep(1)
     return -1 if link == -1 else len(requests.get(link).text)
     # print(f"Image size: {len()/1024} bytes")
+
+
+def isYorNotCLear(imageSize):
+    return 1000 > imageSize > 15
+
+
+def isInvalidRequest(imageSize):
+    return 15 >= imageSize > 0
 
 
 # link = "http://img1.jcarinfo.net/gix.php?&op=ifPqIaIKIagKIltNg5IqcltcAY4XCvAsCF3sVnd0AZTuIa3UIaPtd8T6dut6COn*Cfd1MRXDif4HLbAn7SV8AYYqAS.AV8tch3XsMOGuCRUB&time=201902151020&inya=true"

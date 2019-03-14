@@ -9,11 +9,11 @@ from jpChecker import find_japanese_char as catchJap
 SLEEP_TIME: int = 10
 
 errorList = {"yearMakeModel": "unknown", "chassisPrefix": "unknown",
-             "transColorFuel": "| --", "equipment": "| --", "yorText": "none", "yorImage": 6385}  # 6385 #2151 for no foto
+             "transColorFuel": "| --", "equipment": "| --", "yorText": "none", "yorImage": 6385,}  # 6385 #2151 for no foto  "auc_sheet": 2151, "more_images": 2151 #NZE151-1076863
 errorReturnValue = {"jap_char": "japanese characters", "yearMakeModel": "unknown year/make/model", "chassisPrefix": "unknown chassis prefix",
-                    "transColorFuel": "no transmission/color/fuel type", "equipment": "no equipment", "yorText": "missing YOR", "yorImage": "no YOR Image"}
+                    "transColorFuel": "no transmission/color/fuel type", "equipment": "no equipment", "yorText": "missing YOR", "yorImage": "no YOR Image", "nofoto": "Image show no foto", "auc_sheet": "no auction sheet"}
 errorCounter = {"jap_char": [], "yearMakeModel": [], "chassisPrefix": [],
-                "transColorFuel": [], "equipment": [], "yorText": [], "yorImage": []}
+                "transColorFuel": [], "equipment": [], "yorText": [], "yorImage": [], "nofoto": [], "auc_sheet": []}
 
 
 def printList(list):
@@ -109,6 +109,36 @@ def destruct_info_upd(containerPath):
         vehicleInfo["yorImage"] = -1
 
     return vehicleInfo
+
+
+def deconstruct_details(containerPath):
+    #   March 8, 2019
+    #   For additional info on vehicle:
+    #   //div[starts-with(@id,'VehicleDetail')]//div[contains(@class,'additional-image-container hide-in-mobile')]
+    #   //div[starts-with(@id,'VehicleDetail')]//div[contains(@class,'additional-image-container hide-in-mobile')]//img[@class='additional-image-size']
+    #   //img[starts-with(@id,'imageFront')]
+    #   if imagesize < 200 == image is not displayed.
+    #
+    #   For auction sheet:
+    #   //img[starts-with(@id,'auction-sheet-image')]
+    #   March 14, 2019
+    #       //div[starts-with(@id,'VehicleDetail')]//div[contains(@class,'additional-image-container hide-in-mobile')]//img
+    #       not including the first img and last
+    #   Main image
+    #       //img[@class='imgsize front-image-small']
+    auctionSheetPath = ".//img[starts-with(@id,'auction-sheet-image')]"
+    moreImages = ".//div[contains(@class,'additional-image-container hide-in-mobile')]//img"
+    more_details = {}
+
+    more_details["auc_sheet"] = containerPath.find_element_by_xpath(
+        auctionSheetPath).get_attribute('src')
+    # more_details["more_images"] = containerPath.find_element_by_xpath(moreImages)
+    # get only the 2nd element, but do not include the last element
+    pictureLinks = containerPath.find_elements_by_xpath(moreImages)[1:-1]
+    more_details["more_images"] = [
+        picture.get_attribute("src") for picture in pictureLinks]
+
+    return more_details
 
 
 def traverseKeys():

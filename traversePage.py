@@ -48,9 +48,9 @@ def nextResults(webdriver):
             isEnd = True
             break
 
-        start = time()
+        startRetrieve = time()
         infoList.extend(retrieveInfoUpd(webdriver))
-        end = time()
+        endRetrieve = time()
 
         activePage = WebDriverWait(webdriver, WAIT_TIME).until(
             EC.presence_of_element_located((By.XPATH, getActiveLink)))
@@ -66,7 +66,7 @@ def nextResults(webdriver):
             print()
         else:
             print(
-                f"Finished checking [{auctionHouseName}, Page {activePage.text}] in {(end-start):.1f} seconds.")
+                f"Finished checking [{auctionHouseName}, Page {activePage.text}] in {(endRetrieve-startRetrieve):.1f} seconds.")
             print()
             print(f"Next is [Page {nextPage.text}]..")
             nextPage.click()

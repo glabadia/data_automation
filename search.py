@@ -103,6 +103,7 @@ def searchFunc(driver, chassisNum=""):
         searchButton = WebDriverWait(driver, SLEEP_TIME).until(
             EC.presence_of_element_located((By.XPATH, searchPath)))
         searchButton.click()
+
     except Exception as e:
         print(f"Search function failed..[{e}]")
 
