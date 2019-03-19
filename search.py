@@ -5,17 +5,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from time import sleep
 from errorCheck import hasNoResults
-from utils import convert_to_text, trimm_list, ah_table, trimm_list_v2, sorted_auctionHouses
+from utils import printDict, convert_to_text, trimm_list, ah_table, trimm_list_v2, sorted_auctionHouses
 
 SLEEP_TIME: int = 10
-
-# Select auctionhouses to search, by
-# looking for the Xpath:
-#   id="auctionsitecontainer" >
-#   span > div.btn-group > ul.multiselect-container dropdown-menu > li > a > label
-#   button.multiselect dropdown-toggle btn btn-default
-#   auctionPath = "//div[@id='auctionsitecontainer']/span/div[@class='btn-group']/ul[@class='multiselect-container dropdown-menu']/li/a/label"
-#   driver.find_elements_by_xpath("")
 
 
 def open_dropdownbox(driver):
@@ -51,7 +43,7 @@ def auctionHouseClick(driver, auction_houses):
     trimmed_list = trimm_list(converted_AH, "-")
     #   trimmed number of units from the list of auction houses
     num_units = trimm_list_v2(converted_AH, "-", "Units")
-    #   dictionary with key = trimmed auction house names, and value as the web element from auction_houses list
+    #   dictionary with key = trimmed auction house names, and value = web element from auction_houses list
     ah_web_element = ah_table(trimmed_list, auction_houses)
     #   dictionary with key = trimmed auction house names, and value = num_units
     ah_units = ah_table(trimmed_list, num_units)
@@ -61,6 +53,7 @@ def auctionHouseClick(driver, auction_houses):
     #   sorted auction houses depending on number of units
     sorted_ah = sorted_auctionHouses(ah_units)
     print(f"Sorted Auction houses: {sorted_ah}")
+    # printDict(f"{sorted_ah}")
 
     for auction_house in sorted_ah:
         sleep(.7)
@@ -70,6 +63,17 @@ def auctionHouseClick(driver, auction_houses):
 #   driver.find_element_by_xpath(conditionPath).click()
 #   options = "//select[@name='conditiongradefrom']/option"
 #   driver.find_elements_by_xpath(options)[-1].click()
+
+
+def sorted_auction_search(driver):
+    auction_houses = auctionHouseSearch(driver)
+    converted_AH = convert_to_text(auction_houses)
+    trimmed_list = trimm_list(converted_AH, "-")
+    num_units = trimm_list_v2(converted_AH, "-", "Units")
+    ah_units = ah_table(trimmed_list, num_units)
+    ah_web_element = ah_table(trimmed_list, auction_houses)
+    sorted_ah = sorted_auctionHouses(ah_units)
+    return sorted_ah, ah_web_element
 
 
 def conditionGrade(driver):
@@ -85,6 +89,9 @@ def conditionGrade(driver):
 
 
 def searchFunc(driver, chassisNum=""):
+    '''
+    One role: Clicks the search button
+    '''
     sleep(5)    # delay for 3 seconds to load more info
 
     # ibcTextBoxPath = "input.form-control.IDVehicle.ibcnumber.isnumber"

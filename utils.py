@@ -9,7 +9,7 @@ from jpChecker import find_japanese_char as catchJap
 SLEEP_TIME: int = 10
 
 errorList = {"yearMakeModel": "unknown", "chassisPrefix": "unknown",
-             "transColorFuel": "| --", "equipment": "| --", "yorText": "none", "yorImage": 6385,}  # 6385 #2151 for no foto  "auc_sheet": 2151, "more_images": 2151 #NZE151-1076863
+             "transColorFuel": "| --", "equipment": "| --", "yorText": "none", "yorImage": 6385, }  # 6385 #2151 for no foto  "auc_sheet": 2151, "more_images": 2151 #NZE151-1076863
 errorReturnValue = {"jap_char": "japanese characters", "yearMakeModel": "unknown year/make/model", "chassisPrefix": "unknown chassis prefix",
                     "transColorFuel": "no transmission/color/fuel type", "equipment": "no equipment", "yorText": "missing YOR", "yorImage": "no YOR Image", "nofoto": "Image show no foto", "auc_sheet": "no auction sheet"}
 errorCounter = {"jap_char": [], "yearMakeModel": [], "chassisPrefix": [],
@@ -126,12 +126,16 @@ def deconstruct_details(containerPath):
     #       not including the first img and last
     #   Main image
     #       //img[@class='imgsize front-image-small']
-    auctionSheetPath = ".//img[starts-with(@id,'auction-sheet-image')]"
+    # auctionSheetPath = ".//img[starts-with(@id,'auction-sheet-image')]" # --> img
+    # --> a
+    auctionSheetPath = ".//a[starts-with(@id,'auction-sheet-image-container')]"
     moreImages = ".//div[contains(@class,'additional-image-container hide-in-mobile')]//img"
     more_details = {}
 
+    # more_details["auc_sheet"] = containerPath.find_element_by_xpath(
+    #     auctionSheetPath).get_attribute('src')  # for image
     more_details["auc_sheet"] = containerPath.find_element_by_xpath(
-        auctionSheetPath).get_attribute('src')
+        auctionSheetPath).get_attribute('href')  # for ahref
     # more_details["more_images"] = containerPath.find_element_by_xpath(moreImages)
     # get only the 2nd element, but do not include the last element
     pictureLinks = containerPath.find_elements_by_xpath(moreImages)[1:-1]
@@ -143,6 +147,11 @@ def deconstruct_details(containerPath):
 
 def traverseKeys():
     return None
+
+
+def error_init():
+    return {"jap_char": [], "yearMakeModel": [], "chassisPrefix": [],
+            "transColorFuel": [], "equipment": [], "yorText": [], "yorImage": [], "nofoto": [], "auc_sheet": []}
 
 
 def errorCheckUpd(vehiclesList, lookout=errorList, reportLog=errorReturnValue, count=errorCounter):
@@ -173,7 +182,43 @@ def errorCheckUpd(vehiclesList, lookout=errorList, reportLog=errorReturnValue, c
     return vehicleErrors, count  # , vehiclesList[-1]["ibcnum"][:-10]
 
 
+def errorCheck_ibc_shuppin(vehiclesList, lookout=errorList, reportLog=errorReturnValue):
+    ibcnumKey = "ibcnum"
+    shuppinKey = "shuppin"
+    errorCount = error_init()
+    for vehicle in vehiclesList:
+        for key in lookout:
+            if key == 'yearMakeModel':
+                if catchJap(vehicle[key]):
+                    errorCount[key].append(
+                        (vehicle[ibcnumKey], vehicle[shuppinKey]))
+            if key == 'yorImage':
+                # fast search
+                # if lookout[key] == getImageFileSize(vehicle[key]):
+                if lookout[key] == vehicle[key]:  # standard search
+                    errorCount[key].append(
+                        (vehicle[ibcnumKey], vehicle[shuppinKey]))
+            else:
+                if lookout[key].lower() in vehicle[key].lower():
+                    errorCount[key].append(
+                        (vehicle[ibcnumKey], vehicle[shuppinKey]))
+
+    return errorCount  # , vehiclesList[-1]["ibcnum"][:-10]
+
+
 def dictErrors(error_list):
+    displayOutput = {}
+
+    for key in error_list:  # error_list.items() => returns a tuple, not a key, even if you have a "for key in error_list.items()"
+        if len(error_list[key]) == 0:
+            displayOutput[errorReturnValue[key]] = "No issues"
+        else:
+            displayOutput[errorReturnValue[key]] = error_list[key]
+
+    return displayOutput
+
+
+def dictErrors_shuppin(error_list):
     displayOutput = {}
 
     for key in error_list:  # error_list.items() => returns a tuple, not a key, even if you have a "for key in error_list.items()"
@@ -192,7 +237,7 @@ def printErrors(error_list):
         value = error_list[key]
         if type(value) is list:
             for content in value:
-                print(content)
+                print(f"{content},")
         else:
             print(value)
         print("-------------------------------------------------------------------------------")
@@ -208,9 +253,19 @@ def getTimeStamp():
     return dt.now().strftime("%A, %d. %B %Y %I:%M%p")
 
 
-def printToFile(duration, workingDirectory, fileName="testFile", contentList=""):
-    import os
-    os.chdir(workingDirectory)
+def tuple_to_list(listOfTuples):
+    iL, sL = [], []
+    for item in listOfTuples:
+        ibc, shuppin = item
+        iL.append(ibc)
+        sL.append(shuppin)
+
+    return iL, sL
+
+
+def printToFile(duration, fileName="testFile", contentList=""):
+    # import os
+    # os.chdir(workingDirectory)
     dc_time, check_time = duration
     with open(f"{fileName}.txt", "w") as writer:
         writer.write(
@@ -228,12 +283,47 @@ def printToFile(duration, workingDirectory, fileName="testFile", contentList="")
         for content in contentList:
             writer.write(f"{content.title()}:\n")
             value = contentList[content]
+            # print(f"Value: {value}")
             if type(value) is list:
                 for entry in value:
                     # writer.write(f"{entry[-9:]},\n")
                     writer.write(f"{entry},\n")
             else:
                 # writer.write(f"{value[-9:]}\n")
+                writer.write(f"{value}\n")
+            writer.write(
+                "-------------------------------------------------------------\n")
+
+
+def printToFile_shuppin(duration, fileName="testFile", contentList=""):
+    dc_time, check_time = duration
+    with open(f"{fileName}.txt", "w") as writer:
+        writer.write(
+            "#############################################################\n")
+        writer.write(f"{fileName.upper()} Errors: \n")
+        writer.write("\n")
+        writer.write(
+            f"Data Collection lasted for {convert_time(dc_time)} seconds.\n")
+        writer.write(
+            f"Error checking completed within {convert_time(check_time)} seconds.\n")
+        writer.write(f"Finished checking on {getTimeStamp()} \n")
+        writer.write(
+            "#############################################################\n")
+        for content in contentList:
+            writer.write(f"{content.title()}:\n")
+            value = contentList[content]
+            if type(value) is list:
+                ibcnum, shuppin = tuple_to_list(value)
+                for entry in ibcnum:
+                    writer.write(f"{entry}, ")
+                writer.write("\n\n")
+                writer.write("Shuppin: \n")
+                writer.write("\n")
+                for entry in shuppin:
+                    writer.write(f"{entry}, ")
+                writer.write("\n")
+
+            else:
                 writer.write(f"{value}\n")
             writer.write(
                 "-------------------------------------------------------------\n")
@@ -315,3 +405,13 @@ def ah_table(key_list, value_list):
     for k, v in zip(key_list, value_list):
         hash_table[k] = v
     return hash_table
+
+
+def fancy_print(value):
+    import math
+    num = value
+    sqrt = math.sqrt(num)
+    sqrt_flr, sqrt_cel = math.floor(sqrt), math.ceil(sqrt)
+    side = sqrt_flr if abs(
+        sqrt_flr**2 - num) < abs(sqrt_cel**2 - num) else sqrt_cel
+    return side

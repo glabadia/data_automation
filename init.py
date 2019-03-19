@@ -6,9 +6,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from time import sleep, time
 from userlogin import userLogin, userLoginIdirect
-from search import searchFunc, auctionHouseClick, auctionHouseSearch, unselect_AH, open_dropdownbox
+from search import searchFunc, auctionHouseClick, auctionHouseSearch, unselect_AH, open_dropdownbox, sorted_auction_search
 from results import expandVehicleInfoIdirect, retrieveInfoUpd, retrieveInfoDetail, expandButton, waitLoader
-from utils import printList, destructure, printDict, errorCheckUpd
+from utils import printList, destructure, printDict, errorCheckUpd, createDirectory
 from traversePage import nextResults
 from dataScraping import getAllInfo
 
@@ -34,18 +34,19 @@ driver.get(url)
 userLoginIdirect(username, passcode, driver)
 
 # open_dropdownbox(driver)
-
 # a = auctionHouseSearch(driver)
 # auctionHouseClick(driver, a)
 # unselect_AH(driver)
 # conditionGrade()
 
-searchFunc(driver)
+# searchFunc(driver)  # Search Button
 
 # isLoader = waitLoader(driver)
 # expand = False
 # while not expand:
 #     expand = expandButton(driver)
+
+# sleep(5)
 
 # upd = retrieveInfoUpd(driver)
 # print(len(upd))
@@ -53,4 +54,34 @@ searchFunc(driver)
 # detail = retrieveInfoDetail(driver)
 # printDict(detail)
 
-nextResults(driver)
+# nextResults(driver)  # Normal Traverse
+
+
+def one_AH_search(driver):
+    searchFunc(driver)
+    nextResults(driver)
+
+
+def sorted_AH_search(driver):
+    #   open dropdownbox
+    #   retrieve all auction house info
+    #   sort all auction houses ascending order
+    #
+    createDirectory()
+    open_dropdownbox(driver)
+    not_first_run = False
+    sorted_ah_list, web_element = sorted_auction_search(driver)
+    for auction_house in sorted_ah_list:
+        sleep(10)
+        if not_first_run:
+            open_dropdownbox(driver)
+            unselect_AH(driver)
+        print(f"Now searching for: {auction_house}...")
+        web_element[auction_house].click()
+        one_AH_search(driver)
+        print(f"Finished searching for: {auction_house}...")
+        not_first_run = True
+
+
+one_AH_search(driver)
+# sorted_AH_search(driver)

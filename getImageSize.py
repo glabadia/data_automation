@@ -16,7 +16,8 @@ def getImageFileSize(link):
     # imgLink = requests.get(link).text
     # print(len(imgLink))
     # return len(imgLink)
-    # sleep(1)
+    # sleep(2)
+    sleep(.4)
     return -1 if link == -1 else len(requests.get(link).text)
     # print(f"Image size: {len()/1024} bytes")
 
@@ -27,6 +28,10 @@ def isYorNotCLear(imageSize):
 
 def isInvalidRequest(imageSize):
     return 15 >= imageSize > 0
+
+
+def isAucSheetIncomplete(aucSheet):
+    return 230 >= aucSheet >= 227
 
 
 # link = "http://img1.jcarinfo.net/gix.php?&op=ifPqIaIKIagKIltNg5IqcltcAY4XCvAsCF3sVnd0AZTuIa3UIaPtd8T6dut6COn*Cfd1MRXDif4HLbAn7SV8AYYqAS.AV8tch3XsMOGuCRUB&time=201902151020&inya=true"

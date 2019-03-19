@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
 from time import sleep, time
-from utils import errorCheckUpd, printErrors, dictErrors, getAuctionHouse, printToFile, createDirectory, convert_time
+from utils import errorCheckUpd, printErrors, dictErrors, getAuctionHouse, printToFile, createDirectory, convert_time, createDirectory, errorCheck_ibc_shuppin, dictErrors_shuppin, printToFile_shuppin
 from results import expandVehicleInfoIdirect, retrieveInfoTest, retrieveInfoUpd
 
 from errorCheck import hasNoResults
@@ -19,6 +19,7 @@ def nextResults(webdriver):
     #1  Get current page number
     #2  Get Next page number reference
     '''
+    import os
     getActiveLink = "//ul[@class='pagination margin-top-bottom-none']//li[@class='active']"
     getNextLink = "/following-sibling::li[1]//a"
 
@@ -26,6 +27,7 @@ def nextResults(webdriver):
 
     startDC = time()
     isEnd = False
+    createDirectory()
 
     auctionHouseName = ""
 
@@ -46,6 +48,11 @@ def nextResults(webdriver):
             print(f"Data collection for [{auctionHouseName}]: incomplete")
             back_to_search(webdriver)
             isEnd = True
+            break
+
+        if time() - startDC >= 300:
+            print("DC reached 4 minute limit")
+            back_to_search(webdriver)
             break
 
         startRetrieve = time()
@@ -83,16 +90,20 @@ def nextResults(webdriver):
     print(f"Will now check for errors..")
     print()
     startEC = time()
-    checkErrorList = errorCheckUpd(infoList)
+    # checkErrorList = errorCheckUpd(infoList)
+    checkErrorList = errorCheck_ibc_shuppin(infoList)
 
-    populate_errors = dictErrors(checkErrorList[1])
+    # populate_errors = dictErrors(checkErrorList[1])
+    populate_errors = dictErrors_shuppin(checkErrorList)
     # print(populate_errors)
     print("----------------------------------------------------------")
     printErrors(populate_errors)
     endEC = time()
     timeEC = endEC - startEC
-    printToFile((timeDC, timeEC), createDirectory(),
-                auctionHouseName, populate_errors)
+    # printToFile((timeDC, timeEC),
+    #             auctionHouseName, populate_errors)
+    printToFile_shuppin((timeDC, timeEC),
+                        auctionHouseName, populate_errors)
 
     print(f"Error checking done in {convert_time(timeEC)} seconds.")
 
