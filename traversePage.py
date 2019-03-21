@@ -78,7 +78,13 @@ def nextResults(webdriver):
                 f"Finished checking [{auctionHouseName}, Page {activePage.text}] in {(endRetrieve-startRetrieve):.1f} seconds.")
             print()
             print(f"Next is [Page {nextPage.text}]..")
-            nextPage.click()
+            try:
+                nextPage.click()
+            except Exception as e:
+                print(f"Error: {e}")
+                print(f"No Next page..")
+                back_to_search(webdriver)
+                break
     else:
         print("Traverse has been stopped..")
         back_to_search(webdriver)
