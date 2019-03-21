@@ -4,8 +4,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
 from time import sleep, time
-from utils import errorCheckUpd, printErrors, dictErrors, getAuctionHouse, printToFile, createDirectory, convert_time, createDirectory, errorCheck_ibc_shuppin, dictErrors_shuppin, printToFile_shuppin
-from results import expandVehicleInfoIdirect, retrieveInfoTest, retrieveInfoUpd
+from utils import errorCheckUpd, printErrors, dictErrors, getAuctionHouse, printToFile, createDirectory, convert_time, createDirectory, errorCheck_ibc_shuppin, dictErrors_shuppin, printToFile_shuppin, errorCheckMoreInfo
+from results import expandVehicleInfoIdirect, retrieveInfoTest, retrieveInfoUpd, retrieveInfoDetail
 
 from errorCheck import hasNoResults
 
@@ -24,6 +24,7 @@ def nextResults(webdriver):
     getNextLink = "/following-sibling::li[1]//a"
 
     infoList = []
+    addInfoList = []
 
     startDC = time()
     isEnd = False
@@ -50,13 +51,14 @@ def nextResults(webdriver):
             isEnd = True
             break
 
-        if time() - startDC >= 300:
-            print("DC reached 4 minute limit")
-            back_to_search(webdriver)
-            break
+        # if time() - startDC >= 200:
+        #     print("DC reached 4 minute limit")
+        #     back_to_search(webdriver)
+        #     break
 
         startRetrieve = time()
         infoList.extend(retrieveInfoUpd(webdriver))
+        addInfoList.extend(retrieveInfoDetail(webdriver))
         endRetrieve = time()
 
         activePage = WebDriverWait(webdriver, WAIT_TIME).until(
@@ -91,7 +93,8 @@ def nextResults(webdriver):
     print()
     startEC = time()
     # checkErrorList = errorCheckUpd(infoList)
-    checkErrorList = errorCheck_ibc_shuppin(infoList)
+    # checkErrorList = errorCheck_ibc_shuppin(infoList)
+    checkErrorList = errorCheckMoreInfo(infoList, addInfoList)
 
     # populate_errors = dictErrors(checkErrorList[1])
     populate_errors = dictErrors_shuppin(checkErrorList)

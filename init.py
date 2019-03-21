@@ -31,6 +31,7 @@ driver.get(url)
 ###
 
 # userLogin(username, passcode, driver)
+
 userLoginIdirect(username, passcode, driver)
 
 # open_dropdownbox(driver)
@@ -68,6 +69,7 @@ def sorted_AH_search(driver):
     #   sort all auction houses ascending order
     #
     createDirectory()
+
     open_dropdownbox(driver)
     not_first_run = False
     sorted_ah_list, web_element = sorted_auction_search(driver)

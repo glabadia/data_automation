@@ -3,17 +3,21 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from getImageSize import getImageFileSize
+from getImageSize import getImageFileSize, isAucSheetIncomplete, isNoFoto
 from jpChecker import find_japanese_char as catchJap
 
 SLEEP_TIME: int = 10
 
 errorList = {"yearMakeModel": "unknown", "chassisPrefix": "unknown",
              "transColorFuel": "| --", "equipment": "| --", "yorText": "none", "yorImage": 6385, }  # 6385 #2151 for no foto  "auc_sheet": 2151, "more_images": 2151 #NZE151-1076863
+# errorList = {"yearMakeModel": "unknown", "chassisPrefix": "unknown",
+#              "transColorFuel": "| --", "equipment": "| --", "yorText": "none", "yorImage": 6385}  # 6385 #2151 for no foto  "auc_sheet": 2151, "more_images": 2151 #NZE151-1076863
+
+moreErrorList = {"auc_sheet": 228, "more_images": 2151}
 errorReturnValue = {"jap_char": "japanese characters", "yearMakeModel": "unknown year/make/model", "chassisPrefix": "unknown chassis prefix",
-                    "transColorFuel": "no transmission/color/fuel type", "equipment": "no equipment", "yorText": "missing YOR", "yorImage": "no YOR Image", "nofoto": "Image show no foto", "auc_sheet": "no auction sheet"}
+                    "transColorFuel": "no transmission/color/fuel type", "equipment": "no equipment", "yorText": "missing YOR", "yorImage": "no YOR Image", "nofoto": "Image show no foto", "auc_sheet": "no auction sheet", "more_images": "additional photos show 'no foto'"}
 errorCounter = {"jap_char": [], "yearMakeModel": [], "chassisPrefix": [],
-                "transColorFuel": [], "equipment": [], "yorText": [], "yorImage": [], "nofoto": [], "auc_sheet": []}
+                "transColorFuel": [], "equipment": [], "yorText": [], "yorImage": [], "more_images": [], "auc_sheet": []}
 
 
 def printList(list):
@@ -134,13 +138,18 @@ def deconstruct_details(containerPath):
 
     # more_details["auc_sheet"] = containerPath.find_element_by_xpath(
     #     auctionSheetPath).get_attribute('src')  # for image
-    more_details["auc_sheet"] = containerPath.find_element_by_xpath(
-        auctionSheetPath).get_attribute('href')  # for ahref
+    # more_details["auc_sheet"] = containerPath.find_element_by_xpath(
+    #     auctionSheetPath).get_attribute('href')  # for ahref
+    more_details["auc_sheet"] = getImageFileSize(containerPath.find_element_by_xpath(
+        auctionSheetPath).get_attribute('href'))  # for ahref
     # more_details["more_images"] = containerPath.find_element_by_xpath(moreImages)
     # get only the 2nd element, but do not include the last element
+    # March 19, 2019: Get only the inner elements, not the outer ones
     pictureLinks = containerPath.find_elements_by_xpath(moreImages)[1:-1]
+    # more_details["more_images"] = [
+    #     picture.get_attribute("src") for picture in pictureLinks]
     more_details["more_images"] = [
-        picture.get_attribute("src") for picture in pictureLinks]
+        getImageFileSize(picture.get_attribute("src")) for picture in pictureLinks]
 
     return more_details
 
@@ -151,7 +160,7 @@ def traverseKeys():
 
 def error_init():
     return {"jap_char": [], "yearMakeModel": [], "chassisPrefix": [],
-            "transColorFuel": [], "equipment": [], "yorText": [], "yorImage": [], "nofoto": [], "auc_sheet": []}
+            "transColorFuel": [], "equipment": [], "yorText": [], "yorImage": [], "more_images": [], "auc_sheet": []}
 
 
 def errorCheckUpd(vehiclesList, lookout=errorList, reportLog=errorReturnValue, count=errorCounter):
@@ -200,6 +209,42 @@ def errorCheck_ibc_shuppin(vehiclesList, lookout=errorList, reportLog=errorRetur
                         (vehicle[ibcnumKey], vehicle[shuppinKey]))
             else:
                 if lookout[key].lower() in vehicle[key].lower():
+                    errorCount[key].append(
+                        (vehicle[ibcnumKey], vehicle[shuppinKey]))
+
+    return errorCount  # , vehiclesList[-1]["ibcnum"][:-10]
+
+
+def errorCheckMoreInfo(vehiclesList, detailedList, lookout=errorList, moreLookOut=moreErrorList,  reportLog=errorReturnValue):
+    ibcnumKey = "ibcnum"
+    shuppinKey = "shuppin"
+    errorCount = error_init()
+    for vehicle, detail in zip(vehiclesList, detailedList):
+        for key in lookout:
+            if key == 'yearMakeModel':
+                if catchJap(vehicle[key]):
+                    errorCount[key].append(
+                        (vehicle[ibcnumKey], vehicle[shuppinKey]))
+            if key == 'yorImage':
+                # fast search
+                # if lookout[key] == getImageFileSize(vehicle[key]):
+                if lookout[key] == vehicle[key]:  # standard search
+                    errorCount[key].append(
+                        (vehicle[ibcnumKey], vehicle[shuppinKey]))
+            else:
+                if lookout[key].lower() in vehicle[key].lower():
+                    errorCount[key].append(
+                        (vehicle[ibcnumKey], vehicle[shuppinKey]))
+        for key in moreLookOut:
+            if key == 'more_images':
+                imagesList = detail[key]
+                for image in imagesList:
+                    if isNoFoto(image):
+                        errorCount[key].append(
+                            (vehicle[ibcnumKey], vehicle[shuppinKey]))
+                        break
+            if key == 'auc_sheet':
+                if isAucSheetIncomplete(detail[key]):
                     errorCount[key].append(
                         (vehicle[ibcnumKey], vehicle[shuppinKey]))
 
