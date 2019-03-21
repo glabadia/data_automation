@@ -8,16 +8,22 @@ from jpChecker import find_japanese_char as catchJap
 
 SLEEP_TIME: int = 10
 
-errorList = {"yearMakeModel": "unknown", "chassisPrefix": "unknown",
+errorList = {"main_img": 2151, "yearMakeModel": "unknown", "chassisPrefix": "unknown",
              "transColorFuel": "| --", "equipment": "| --", "yorText": "none", "yorImage": 6385, }  # 6385 #2151 for no foto  "auc_sheet": 2151, "more_images": 2151 #NZE151-1076863
 # errorList = {"yearMakeModel": "unknown", "chassisPrefix": "unknown",
 #              "transColorFuel": "| --", "equipment": "| --", "yorText": "none", "yorImage": 6385}  # 6385 #2151 for no foto  "auc_sheet": 2151, "more_images": 2151 #NZE151-1076863
 
-moreErrorList = {"auc_sheet": 228, "more_images": 2151}
-errorReturnValue = {"jap_char": "japanese characters", "yearMakeModel": "unknown year/make/model", "chassisPrefix": "unknown chassis prefix",
+# moreErrorList = {"auc_sheet": 228, "more_images": 2151}
+moreErrorList = {"more_images": 2151}
+errorReturnValue = {"main_img": "no foto on main image", "jap_char": "japanese characters", "yearMakeModel": "unknown year/make/model", "chassisPrefix": "unknown chassis prefix",
                     "transColorFuel": "no transmission/color/fuel type", "equipment": "no equipment", "yorText": "missing YOR", "yorImage": "no YOR Image", "nofoto": "Image show no foto", "auc_sheet": "no auction sheet", "more_images": "additional photos show 'no foto'"}
 errorCounter = {"jap_char": [], "yearMakeModel": [], "chassisPrefix": [],
                 "transColorFuel": [], "equipment": [], "yorText": [], "yorImage": [], "more_images": [], "auc_sheet": []}
+
+
+def error_init():
+    return {"main_img": [], "jap_char": [], "yearMakeModel": [], "chassisPrefix": [],
+            "transColorFuel": [], "equipment": [], "yorText": [], "yorImage": [], "more_images": [], "auc_sheet": []}
 
 
 def printList(list):
@@ -81,9 +87,12 @@ def destruct_info_upd(containerPath):
     equipPath = ".//div[@class='pull-left width-55per']/span[1]"
     yorImagePath = ".//span[@class='text-left width-45per yor-in-thumbnail']//img"
     yorTextPath = ".//span[@class='text-left width-45per yor-in-thumbnail']"
+    mainImgPath = ".//img[@class='imgsize front-image-small']"
 
     vehicleInfo = {}
 
+    vehicleInfo["main_img"] = getImageFileSize(containerPath.find_element_by_xpath(
+        mainImgPath).get_attribute('src'))
     vehicleInfo["ibcnum"] = containerPath.find_element_by_xpath(
         ibcNumPath).text[-9:]
     vehicleInfo["shuppin"] = containerPath.find_element_by_xpath(
@@ -140,8 +149,8 @@ def deconstruct_details(containerPath):
     #     auctionSheetPath).get_attribute('src')  # for image
     # more_details["auc_sheet"] = containerPath.find_element_by_xpath(
     #     auctionSheetPath).get_attribute('href')  # for ahref
-    more_details["auc_sheet"] = getImageFileSize(containerPath.find_element_by_xpath(
-        auctionSheetPath).get_attribute('href'))  # for ahref
+    # more_details["auc_sheet"] = getImageFileSize(containerPath.find_element_by_xpath(
+    #     auctionSheetPath).get_attribute('href'))  # for ahref
     # more_details["more_images"] = containerPath.find_element_by_xpath(moreImages)
     # get only the 2nd element, but do not include the last element
     # March 19, 2019: Get only the inner elements, not the outer ones
@@ -156,11 +165,6 @@ def deconstruct_details(containerPath):
 
 def traverseKeys():
     return None
-
-
-def error_init():
-    return {"jap_char": [], "yearMakeModel": [], "chassisPrefix": [],
-            "transColorFuel": [], "equipment": [], "yorText": [], "yorImage": [], "more_images": [], "auc_sheet": []}
 
 
 def errorCheckUpd(vehiclesList, lookout=errorList, reportLog=errorReturnValue, count=errorCounter):
@@ -225,7 +229,7 @@ def errorCheckMoreInfo(vehiclesList, detailedList, lookout=errorList, moreLookOu
                 if catchJap(vehicle[key]):
                     errorCount[key].append(
                         (vehicle[ibcnumKey], vehicle[shuppinKey]))
-            if key == 'yorImage':
+            if key == 'yorImage' or key == 'main_img':
                 # fast search
                 # if lookout[key] == getImageFileSize(vehicle[key]):
                 if lookout[key] == vehicle[key]:  # standard search
@@ -243,10 +247,10 @@ def errorCheckMoreInfo(vehiclesList, detailedList, lookout=errorList, moreLookOu
                         errorCount[key].append(
                             (vehicle[ibcnumKey], vehicle[shuppinKey]))
                         break
-            if key == 'auc_sheet':
-                if isAucSheetIncomplete(detail[key]):
-                    errorCount[key].append(
-                        (vehicle[ibcnumKey], vehicle[shuppinKey]))
+            # if key == 'auc_sheet':
+            #     if isAucSheetIncomplete(detail[key]):
+            #         errorCount[key].append(
+            #             (vehicle[ibcnumKey], vehicle[shuppinKey]))
 
     return errorCount  # , vehiclesList[-1]["ibcnum"][:-10]
 
