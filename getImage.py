@@ -51,18 +51,20 @@ def getImageFileSize(link):
 # for url in urlList:
 #     print(getImageFileSize(url))
 
-urls = ['http://img1.jcarinfo.net/gixlarge.php?&altUrl=http://88.99.218.95/imgs/aKxY8utwMCwJGK2s2DLsoigf5jwE11l38dHec1SG1ThdkLpqrrNj',
-        "http://img2.jcarinfo.net/gixlarge.php?&altUrl=http://88.99.218.95/imgs/aKxY8utwMCwJGK2s2DLsoigf5jwE11l3NbMwtDKF04O5WTWRjnf4",
-        "http://img3.jcarinfo.net/gixlarge.php?&altUrl=http://88.99.218.95/imgs/aKxY8utwMCwJGK2s2DLsoigf5jwE11l21gQf0CSyAbolIVEqz007",
-        "http://img0.jcarinfo.net/gixlarge.php?&altUrl=http://88.99.218.95/imgs/aKxY8utwMCwJGK2s2DLsoigf5jwE11l2Pew7maNfOx6aiQ5piNnq",
-        'http://img1.jcarinfo.net/gixlarge.php?&altUrl=http://88.99.218.95/imgs/aKxY8utwMCwJGK2s2DLsoigf5jwE11l4na9M0jVvxMkjWqLz6WBp',
-        "http://img2.jcarinfo.net/gixlarge.php?&op=hFKqIaIKIagKIltNg5IqcltPLFU1g8GPLFDpgRn1LuTuIa3UIaItWZT*IaeFIut6COn*Cfd1MRXDif4HLbAn7SV8AYYqAS.AV8tch3XsMOGuCRUB&time=201903181740",
-        "http://img3.jcarinfo.net/gixlarge.php?&op=hFKqIaIKIagKIltNg5IqcltPLFU1g8GPLFDpgRn1LuTuIa3UIaItWZT*IaevIlt6COn*Cfd1MRXDif4HLbAn7SV8AYYqAS.AV8tch3XsMOGuCRUB&time=201903181740",
-        "http://img0.jcarinfo.net/gixlarge.php?&altUrl=http://88.99.218.95/imgs/aKxY8utwMCwJGK2s2DLsoigf5jwE11l5G7rQpBjUrohl960YfHbs"]
+#  urls = ['http://img1.jcarinfo.net/gixlarge.php?&altUrl=http://88.99.218.95/imgs/aKxY8utwMCwJGK2s2DLsoigf5jwE11l38dHec1SG1ThdkLpqrrNj',
+#         "http://img2.jcarinfo.net/gixlarge.php?&altUrl=http://88.99.218.95/imgs/aKxY8utwMCwJGK2s2DLsoigf5jwE11l3NbMwtDKF04O5WTWRjnf4",
+#         "http://img3.jcarinfo.net/gixlarge.php?&altUrl=http://88.99.218.95/imgs/aKxY8utwMCwJGK2s2DLsoigf5jwE11l21gQf0CSyAbolIVEqz007",
+#         "http://img0.jcarinfo.net/gixlarge.php?&altUrl=http://88.99.218.95/imgs/aKxY8utwMCwJGK2s2DLsoigf5jwE11l2Pew7maNfOx6aiQ5piNnq",
+#         'http://img1.jcarinfo.net/gixlarge.php?&altUrl=http://88.99.218.95/imgs/aKxY8utwMCwJGK2s2DLsoigf5jwE11l4na9M0jVvxMkjWqLz6WBp',
+#         "http://img2.jcarinfo.net/gixlarge.php?&op=hFKqIaIKIagKIltNg5IqcltPLFU1g8GPLFDpgRn1LuTuIa3UIaItWZT*IaeFIut6COn*Cfd1MRXDif4HLbAn7SV8AYYqAS.AV8tch3XsMOGuCRUB&time=201903181740",
+#         "http://img3.jcarinfo.net/gixlarge.php?&op=hFKqIaIKIagKIltNg5IqcltPLFU1g8GPLFDpgRn1LuTuIa3UIaItWZT*IaevIlt6COn*Cfd1MRXDif4HLbAn7SV8AYYqAS.AV8tch3XsMOGuCRUB&time=201903181740",
+#         "http://img0.jcarinfo.net/gixlarge.php?&altUrl=http://88.99.218.95/imgs/aKxY8utwMCwJGK2s2DLsoigf5jwE11l5G7rQpBjUrohl960YfHbs"]
 
-# for url in urls:
-#     # auctionsheet out of focus: 228
-#     print(getImageFileSize(url))
+urls = ['http://idirect.ibcjapan.co.jp/images/idirect_nf_small.gif',
+        'http://idirect.ibcjapan.co.jp/images/idirect_nf_large.gif']
+for url in urls:
+    # auctionsheet out of focus: 228
+    print(getImageFileSize(url))
 
 
 def sample_function(x=433):

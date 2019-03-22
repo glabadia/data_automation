@@ -13,7 +13,7 @@ errorList = {"main_img": 2151, "yearMakeModel": "unknown", "chassisPrefix": "unk
 # errorList = {"yearMakeModel": "unknown", "chassisPrefix": "unknown",
 #              "transColorFuel": "| --", "equipment": "| --", "yorText": "none", "yorImage": 6385}  # 6385 #2151 for no foto  "auc_sheet": 2151, "more_images": 2151 #NZE151-1076863
 
-# moreErrorList = {"auc_sheet": 228, "more_images": 2151}
+# moreErrorList = {"auc_sheet": 228, "more_images": 2151} #3386 -> image not available
 moreErrorList = {"more_images": 2151}
 errorReturnValue = {"main_img": "no foto on main image", "jap_char": "japanese characters", "yearMakeModel": "unknown year/make/model", "chassisPrefix": "unknown chassis prefix",
                     "transColorFuel": "no transmission/color/fuel type", "equipment": "no equipment", "yorText": "missing YOR", "yorImage": "no YOR Image", "nofoto": "Image show no foto", "auc_sheet": "no auction sheet", "more_images": "additional photos show 'no foto'"}
