@@ -1,9 +1,9 @@
 #############################################################
-ARAI VAN TRUCK Errors: 
+JU HOKKAIDO Errors: 
 
-Data Collection lasted for 47.3 seconds.
+Data Collection lasted for 6 minutes and 27.4 seconds.
 Error checking completed within 0.0 seconds.
-Finished checking on Thursday, 21. March 2019 04:56PM 
+Finished checking on Friday, 22. March 2019 04:33PM 
 #############################################################
 No Foto On Main Image:
 No issues
@@ -12,25 +12,13 @@ Japanese Characters:
 No issues
 -------------------------------------------------------------
 Unknown Year/Make/Model:
-110615281, 
-
-Shuppin: 
-
-4743, 
+No issues
 -------------------------------------------------------------
 Unknown Chassis Prefix:
-110618756, 
-
-Shuppin: 
-
-7512, 
+No issues
 -------------------------------------------------------------
 No Transmission/Color/Fuel Type:
-110615281, 110618756, 
-
-Shuppin: 
-
-4743, 7512, 
+No issues
 -------------------------------------------------------------
 No Equipment:
 No issues
@@ -39,18 +27,10 @@ Missing Yor:
 No issues
 -------------------------------------------------------------
 No Yor Image:
-110618071, 110620654, 110615281, 110615187, 110620655, 110618075, 110618756, 110620657, 110620656, 
-
-Shuppin: 
-
-8316, 8505, 4743, 8502, 8507, 8501, 7512, 8705, 8511, 
+No issues
 -------------------------------------------------------------
 Additional Photos Show 'No Foto':
-110618071, 110620654, 110615281, 110615187, 110620655, 110618075, 110618756, 110620657, 110620656, 
-
-Shuppin: 
-
-8316, 8505, 4743, 8502, 8507, 8501, 7512, 8705, 8511, 
+No issues
 -------------------------------------------------------------
 No Auction Sheet:
 No issues

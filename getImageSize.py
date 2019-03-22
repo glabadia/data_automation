@@ -17,7 +17,7 @@ def getImageFileSize(link):
     # print(len(imgLink))
     # return len(imgLink)
     # sleep(2)
-    # sleep(.2)
+    sleep(.2)
     return -1 if link == -1 else len(requests.get(link).text)
     # print(f"Image size: {len()/1024} bytes")
 

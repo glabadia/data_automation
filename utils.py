@@ -219,6 +219,34 @@ def errorCheck_ibc_shuppin(vehiclesList, lookout=errorList, reportLog=errorRetur
     return errorCount  # , vehiclesList[-1]["ibcnum"][:-10]
 
 
+def dataVerification(vehicles, lookout=errorList, moreLookOut=moreErrorList, reportLog=errorReturnValue):
+    ibcnumKey = "ibcnum"
+    shuppinKey = "shuppin"
+    errorCount = error_init()
+    for vehicle in vehicles:
+        basic, advance = vehicle
+        for key in lookout:
+            if key == 'yearMakeModel':
+                if catchJap(basic[key]):
+                    errorCount[key].append(
+                        (basic[ibcnumKey], basic[shuppinKey]))
+            if key == 'yorImage' or key == 'main_img':
+                # fast search
+                # if lookout[key] == getImageFileSize(basic[key]):
+                if lookout[key] == basic[key]:  # standard search
+                    errorCount[key].append(
+                        (basic[ibcnumKey], basic[shuppinKey]))
+        for key in moreLookOut:
+            if key == 'more_images':
+                imagesList = advance[key]
+                for image in imagesList:
+                    if isNoFoto(image):
+                        errorCount[key].append(
+                            (basic[ibcnumKey], basic[shuppinKey]))
+                        break
+    return errorCount
+
+
 def errorCheckMoreInfo(vehiclesList, detailedList, lookout=errorList, moreLookOut=moreErrorList,  reportLog=errorReturnValue):
     ibcnumKey = "ibcnum"
     shuppinKey = "shuppin"

@@ -10,6 +10,7 @@ from errorCheck import hasNoResults
 EXPAND_WAIT_TIME: int = 50
 WAIT_TIME: int = 25
 SLEEP_TIME: int = 10
+FAST_TIME: int = 5
 
 
 def expandVehicleInfo(driver):
@@ -127,6 +128,32 @@ def retrieveInfoUpd(driver):
     return allVehicles
 
 
+def retrieveInfoDetail(driver):
+    vehicleDetails = []
+    vehicleDetailPath = "//div[starts-with(@id,'VehicleDetail')]"
+    containerDetailList = WebDriverWait(driver, WAIT_TIME).until(
+        EC.presence_of_all_elements_located((By.XPATH, vehicleDetailPath)))
+    for container in containerDetailList:
+        vehicleDetails.append(deconstruct_details(container))
+
+    return vehicleDetails
+    # return containerDetailList
+    # for loop traverse
+
+
+def retrieveAllInfo(driver):
+    vehicleInfo = []
+    basicInfoPath = "//div[@class='col-lg-12 search-result-container']"
+    advInfoPath = "//div[starts-with(@id,'VehicleDetail')]"
+    basicInfoList = driver.find_elements_by_xpath(basicInfoPath)
+    advInfoList = driver.find_elements_by_xpath(advInfoPath)
+    for basic, adv in zip(basicInfoList, advInfoList):
+        vehicleInfo.append(
+            (destruct_info_upd(basic), deconstruct_details(adv)))
+
+    return vehicleInfo
+
+
 def retrieveInfoTest(driver):
     """
     Tests the 100th element of the div
@@ -220,19 +247,6 @@ def vehicleDetailPix():
     #   For auction sheet:
     #  //img[starts-with(@id,'auction-sheet-image')]
     return
-
-
-def retrieveInfoDetail(driver):
-    vehicleDetails = []
-    vehicleDetailPath = "//div[starts-with(@id,'VehicleDetail')]"
-    containerDetailList = WebDriverWait(driver, WAIT_TIME).until(
-        EC.presence_of_all_elements_located((By.XPATH, vehicleDetailPath)))
-    for container in containerDetailList:
-        vehicleDetails.append(deconstruct_details(container))
-
-    return vehicleDetails
-    # return containerDetailList
-    # for loop traverse
 
 
 def yorImages():
