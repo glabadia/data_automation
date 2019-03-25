@@ -7,8 +7,8 @@ from utils import printList, destruct_info_upd, createDirectory, deconstruct_det
 from time import sleep, time
 from search import calibrateSearch
 from errorCheck import hasNoResults
-EXPAND_WAIT_TIME: int = 50
-WAIT_TIME: int = 25
+EXPAND_WAIT_TIME: int = 15  # 50
+WAIT_TIME: int = 15  # 25
 SLEEP_TIME: int = 10
 FAST_TIME: int = 5
 

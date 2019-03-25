@@ -13,8 +13,9 @@ errorList = {"main_img": 2151, "yearMakeModel": "unknown", "chassisPrefix": "unk
 # errorList = {"yearMakeModel": "unknown", "chassisPrefix": "unknown",
 #              "transColorFuel": "| --", "equipment": "| --", "yorText": "none", "yorImage": 6385}  # 6385 #2151 for no foto  "auc_sheet": 2151, "more_images": 2151 #NZE151-1076863
 
-# moreErrorList = {"auc_sheet": 228, "more_images": 2151} #3386 -> image not available
-moreErrorList = {"more_images": 2151}
+# 3386 -> image not available
+moreErrorList = {"auc_sheet": 228, "more_images": 2151}
+# moreErrorList = {"more_images": 2151}
 errorReturnValue = {"main_img": "no foto on main image", "jap_char": "japanese characters", "yearMakeModel": "unknown year/make/model", "chassisPrefix": "unknown chassis prefix",
                     "transColorFuel": "no transmission/color/fuel type", "equipment": "no equipment", "yorText": "missing YOR", "yorImage": "no YOR Image", "nofoto": "Image show no foto", "auc_sheet": "no auction sheet", "more_images": "additional photos show 'no foto'"}
 errorCounter = {"jap_char": [], "yearMakeModel": [], "chassisPrefix": [],
@@ -146,12 +147,9 @@ def deconstruct_details(containerPath):
     more_details = {}
 
     # more_details["auc_sheet"] = containerPath.find_element_by_xpath(
-    #     auctionSheetPath).get_attribute('src')  # for image
-    # more_details["auc_sheet"] = containerPath.find_element_by_xpath(
     #     auctionSheetPath).get_attribute('href')  # for ahref
-    # more_details["auc_sheet"] = getImageFileSize(containerPath.find_element_by_xpath(
-    #     auctionSheetPath).get_attribute('href'))  # for ahref
-    # more_details["more_images"] = containerPath.find_element_by_xpath(moreImages)
+    more_details["auc_sheet"] = getImageFileSize(containerPath.find_element_by_xpath(
+        auctionSheetPath).get_attribute('href'))  # for ahref
     # get only the 2nd element, but do not include the last element
     # March 19, 2019: Get only the inner elements, not the outer ones
     pictureLinks = containerPath.find_elements_by_xpath(moreImages)[1:-1]
@@ -236,6 +234,10 @@ def dataVerification(vehicles, lookout=errorList, moreLookOut=moreErrorList, rep
                 if lookout[key] == basic[key]:  # standard search
                     errorCount[key].append(
                         (basic[ibcnumKey], basic[shuppinKey]))
+            else:
+                if lookout[key].lower() in basic[key].lower():
+                    errorCount[key].append(
+                        (basic[ibcnumKey], basic[shuppinKey]))
         for key in moreLookOut:
             if key == 'more_images':
                 imagesList = advance[key]
@@ -244,6 +246,12 @@ def dataVerification(vehicles, lookout=errorList, moreLookOut=moreErrorList, rep
                         errorCount[key].append(
                             (basic[ibcnumKey], basic[shuppinKey]))
                         break
+            if key == 'auc_sheet':
+                if isAucSheetIncomplete(advance[key]):
+                # if isAucSheetIncomplete(getImageFileSize(advance[key])):
+                    errorCount[key].append(
+                        (basic[ibcnumKey], basic[shuppinKey]))
+                    # break
     return errorCount
 
 

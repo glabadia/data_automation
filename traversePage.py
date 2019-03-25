@@ -10,8 +10,8 @@ from results import expandVehicleInfoIdirect, retrieveInfoTest, retrieveInfoUpd,
 from errorCheck import hasNoResults
 
 import asyncio
-WAIT_TIME: int = 10
-SLEEP_TIME: int = 5
+WAIT_TIME: int = 5  # 10
+SLEEP_TIME: int = 3  # 5
 
 
 def nextResults(webdriver):
@@ -51,7 +51,7 @@ def nextResults(webdriver):
             isEnd = True
             break
 
-        if time() - startDC >= 200:
+        if time() - startDC >= 800:
             print("DC reached 4 minute limit")
             back_to_search(webdriver)
             break
