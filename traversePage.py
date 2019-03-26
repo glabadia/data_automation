@@ -51,7 +51,7 @@ def nextResults(webdriver):
             isEnd = True
             break
 
-        if time() - startDC >= 800:
+        if time() - startDC >= 240:
             print("DC reached 4 minute limit")
             back_to_search(webdriver)
             break

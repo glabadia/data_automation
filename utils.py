@@ -92,8 +92,10 @@ def destruct_info_upd(containerPath):
 
     vehicleInfo = {}
 
-    vehicleInfo["main_img"] = getImageFileSize(containerPath.find_element_by_xpath(
-        mainImgPath).get_attribute('src'))
+    vehicleInfo["main_img"] = containerPath.find_element_by_xpath(
+        mainImgPath).get_attribute('src')
+    # vehicleInfo["main_img"] = getImageFileSize(containerPath.find_element_by_xpath(
+    #     mainImgPath).get_attribute('src'))
     vehicleInfo["ibcnum"] = containerPath.find_element_by_xpath(
         ibcNumPath).text[-9:]
     vehicleInfo["shuppin"] = containerPath.find_element_by_xpath(
@@ -110,10 +112,10 @@ def destruct_info_upd(containerPath):
     yorTextImage = "None"
 
     try:
-        # yorTextImage = containerPath.find_element_by_xpath(
-        #     yorImagePath).get_attribute('src')
-        yorTextImage = getImageFileSize(containerPath.find_element_by_xpath(
-            yorImagePath).get_attribute('src'))
+        yorTextImage = containerPath.find_element_by_xpath(
+            yorImagePath).get_attribute('src')
+        # yorTextImage = getImageFileSize(containerPath.find_element_by_xpath(
+        #     yorImagePath).get_attribute('src'))
         vehicleInfo["yorText"] = ""
         vehicleInfo["yorImage"] = yorTextImage
 
@@ -146,10 +148,10 @@ def deconstruct_details(containerPath):
     moreImages = ".//div[contains(@class,'additional-image-container hide-in-mobile')]//img"
     more_details = {}
 
-    # more_details["auc_sheet"] = containerPath.find_element_by_xpath(
-    #     auctionSheetPath).get_attribute('href')  # for ahref
-    more_details["auc_sheet"] = getImageFileSize(containerPath.find_element_by_xpath(
-        auctionSheetPath).get_attribute('href'))  # for ahref
+    more_details["auc_sheet"] = containerPath.find_element_by_xpath(
+        auctionSheetPath).get_attribute('href')  # for ahref
+    # more_details["auc_sheet"] = getImageFileSize(containerPath.find_element_by_xpath(
+    #     auctionSheetPath).get_attribute('href'))  # for ahref
     # get only the 2nd element, but do not include the last element
     # March 19, 2019: Get only the inner elements, not the outer ones
     pictureLinks = containerPath.find_elements_by_xpath(moreImages)[1:-1]
@@ -230,8 +232,8 @@ def dataVerification(vehicles, lookout=errorList, moreLookOut=moreErrorList, rep
                         (basic[ibcnumKey], basic[shuppinKey]))
             if key == 'yorImage' or key == 'main_img':
                 # fast search
-                # if lookout[key] == getImageFileSize(basic[key]):
-                if lookout[key] == basic[key]:  # standard search
+                if lookout[key] == getImageFileSize(basic[key]):
+                    # if lookout[key] == basic[key]:  # standard search
                     errorCount[key].append(
                         (basic[ibcnumKey], basic[shuppinKey]))
             else:
@@ -247,8 +249,8 @@ def dataVerification(vehicles, lookout=errorList, moreLookOut=moreErrorList, rep
                             (basic[ibcnumKey], basic[shuppinKey]))
                         break
             if key == 'auc_sheet':
-                if isAucSheetIncomplete(advance[key]):
-                # if isAucSheetIncomplete(getImageFileSize(advance[key])):
+                # if isAucSheetIncomplete(advance[key]):
+                if isAucSheetIncomplete(getImageFileSize(advance[key])):
                     errorCount[key].append(
                         (basic[ibcnumKey], basic[shuppinKey]))
                     # break

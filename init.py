@@ -11,6 +11,7 @@ from results import expandVehicleInfoIdirect, retrieveInfoUpd, retrieveInfoDetai
 from utils import printList, destructure, printDict, errorCheckUpd, createDirectory
 from traversePage import nextResults
 from dataScraping import getAllInfo
+from bs4_searchTags import bs4_search_elements, destruct_basic, destruct_adv
 
 url = "http://www.ibcjapan.co.jp/"
 home_driver = r"E:\personal\program\chromedriver"
@@ -40,7 +41,15 @@ userLoginIdirect(username, passcode, driver)
 # unselect_AH(driver)
 # conditionGrade()
 
-# searchFunc(driver)  # Search Button
+searchFunc(driver)  # Search Button
+
+expandVehicleInfoIdirect(driver)
+sleep(20)
+
+# bs4_search_elements(driver)
+print(destruct_basic(driver))
+print(destruct_adv(driver))
+
 
 # isLoader = waitLoader(driver)
 # expand = False
@@ -85,5 +94,5 @@ def sorted_AH_search(driver):
         not_first_run = True
 
 
-one_AH_search(driver)
+# one_AH_search(driver)
 # sorted_AH_search(driver)
