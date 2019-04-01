@@ -232,8 +232,8 @@ def dataVerification(vehicles, lookout=errorList, moreLookOut=moreErrorList, rep
                         (basic[ibcnumKey], basic[shuppinKey]))
             if key == 'yorImage' or key == 'main_img':
                 # fast search
-                if lookout[key] == getImageFileSize(basic[key]):
-                    # if lookout[key] == basic[key]:  # standard search
+                # if lookout[key] == getImageFileSize(basic[key]):
+                if lookout[key] == basic[key]:  # standard search
                     errorCount[key].append(
                         (basic[ibcnumKey], basic[shuppinKey]))
             else:
@@ -249,8 +249,8 @@ def dataVerification(vehicles, lookout=errorList, moreLookOut=moreErrorList, rep
                             (basic[ibcnumKey], basic[shuppinKey]))
                         break
             if key == 'auc_sheet':
-                # if isAucSheetIncomplete(advance[key]):
-                if isAucSheetIncomplete(getImageFileSize(advance[key])):
+                if isAucSheetIncomplete(advance[key]):
+                    # if isAucSheetIncomplete(getImageFileSize(advance[key])):
                     errorCount[key].append(
                         (basic[ibcnumKey], basic[shuppinKey]))
                     # break

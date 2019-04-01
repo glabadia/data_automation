@@ -4,10 +4,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
 from utils import printList, destruct_info_upd, createDirectory, deconstruct_details
+from bs4_searchTags import destruct_basic, destruct_adv
 from time import sleep, time
 from search import calibrateSearch
 from errorCheck import hasNoResults
-EXPAND_WAIT_TIME: int = 15  # 50
+EXPAND_WAIT_TIME: int = 20  # 50
 WAIT_TIME: int = 15  # 25
 SLEEP_TIME: int = 10
 FAST_TIME: int = 5
@@ -143,13 +144,18 @@ def retrieveInfoDetail(driver):
 
 def retrieveAllInfo(driver):
     vehicleInfo = []
-    basicInfoPath = "//div[@class='col-lg-12 search-result-container']"
-    advInfoPath = "//div[starts-with(@id,'VehicleDetail')]"
-    basicInfoList = driver.find_elements_by_xpath(basicInfoPath)
-    advInfoList = driver.find_elements_by_xpath(advInfoPath)
-    for basic, adv in zip(basicInfoList, advInfoList):
-        vehicleInfo.append(
-            (destruct_info_upd(basic), deconstruct_details(adv)))
+    # basicInfoPath = "//div[@class='col-lg-12 search-result-container']"
+    # advInfoPath = "//div[starts-with(@id,'VehicleDetail')]"
+    # basicInfoList = driver.find_elements_by_xpath(basicInfoPath)
+    # advInfoList = driver.find_elements_by_xpath(advInfoPath)
+    # for basic, adv in zip(basicInfoList, advInfoList):
+    #     vehicleInfo.append(
+    #         (destruct_info_upd(basic), deconstruct_details(adv)))
+    basic = destruct_basic(driver)
+    sleep(EXPAND_WAIT_TIME)
+    adv = destruct_adv(driver)
+    for b, a in zip(basic, adv):
+        vehicleInfo.append((b, a))
 
     return vehicleInfo
 

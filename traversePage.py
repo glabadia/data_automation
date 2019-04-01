@@ -51,7 +51,7 @@ def nextResults(webdriver):
             isEnd = True
             break
 
-        if time() - startDC >= 240:
+        if time() - startDC >= 400:
             print("DC reached 4 minute limit")
             back_to_search(webdriver)
             break
@@ -60,7 +60,7 @@ def nextResults(webdriver):
         # infoList.extend(retrieveInfoUpd(webdriver))
         retrievedInfo = retrieveAllInfo(webdriver)
         infoList.extend(retrievedInfo)
-        print(retrievedInfo)
+        # print(retrievedInfo) #comment
         # addInfoList.extend(retrieveInfoDetail(webdriver))
         endRetrieve = time()
 

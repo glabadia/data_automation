@@ -41,14 +41,14 @@ userLoginIdirect(username, passcode, driver)
 # unselect_AH(driver)
 # conditionGrade()
 
-searchFunc(driver)  # Search Button
+# searchFunc(driver)  # Search Button----
 
-expandVehicleInfoIdirect(driver)
-sleep(20)
+# expandVehicleInfoIdirect(driver)#----
+# sleep(20)#----
 
-# bs4_search_elements(driver)
-print(destruct_basic(driver))
-print(destruct_adv(driver))
+# bs4_search_elements(driver)#----
+# print(destruct_basic(driver))#----
+# print(destruct_adv(driver))#----
 
 
 # isLoader = waitLoader(driver)
@@ -94,5 +94,5 @@ def sorted_AH_search(driver):
         not_first_run = True
 
 
-# one_AH_search(driver)
+one_AH_search(driver)
 # sorted_AH_search(driver)

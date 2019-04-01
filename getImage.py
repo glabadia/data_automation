@@ -62,9 +62,19 @@ def getImageFileSize(link):
 
 urls = ['http://idirect.ibcjapan.co.jp/images/idirect_nf_small.gif',
         'http://idirect.ibcjapan.co.jp/images/idirect_nf_large.gif']
+
+
+def getReq(link):
+    resp = requests.head(link)
+    return len(resp.text)
+
+
 for url in urls:
     # auctionsheet out of focus: 228
     print(getImageFileSize(url))
+
+for url in urls:
+    print(getReq(url))
 
 
 def sample_function(x=433):

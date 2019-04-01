@@ -1,3 +1,4 @@
+from getImageSize import getImageFileSize
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from time import sleep
@@ -118,7 +119,8 @@ def destruct_basic(driver):
         equipment = basic.find(
             'div', attrs={'class': 'pull-left width-55per'}).find('span').text.strip()
 
-        vehicleInfo['main_img'] = main_img['src']
+        # vehicleInfo['main_img'] = main_img['src']
+        vehicleInfo['main_img'] = getImageFileSize(main_img['src'])
         vehicleInfo["ibcnum"] = ibcnum[-9:]
         vehicleInfo["shuppin"] = shuppin
         vehicleInfo["yearMakeModel"] = unicodedata.normalize(
@@ -131,7 +133,7 @@ def destruct_basic(driver):
             'span', attrs={'class': 'text-left width-45per yor-in-thumbnail'})
 
         try:
-            yorTextImage = yorTextImage.find('img')
+            yorTextImage = getImageFileSize(yorTextImage.find('img'))
             vehicleInfo["yorText"] = ""
             vehicleInfo["yorImage"] = yorTextImage
 
@@ -160,8 +162,11 @@ def destruct_adv(driver):
         moreImages = adv.find('div', attrs={
                               'class': 'additional-image-container hide-in-mobile'}).find_all('img')[1:-1]
 
-        vehicleDetail["auc_sheet"] = auction_sheet['href']
-        vehicleDetail["more_images"] = [img['src'] for img in moreImages]
+        # vehicleDetail["auc_sheet"] = auction_sheet['href']
+        vehicleDetail["auc_sheet"] = getImageFileSize(auction_sheet['href'])
+        # vehicleDetail["more_images"] = [img['src'] for img in moreImages]
+        vehicleDetail["more_images"] = [
+            getImageFileSize(img['src']) for img in moreImages]
 
         all_details.append(vehicleDetail)
 
