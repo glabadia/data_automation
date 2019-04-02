@@ -24,6 +24,7 @@ def nextResults(webdriver):
     getNextLink = "/following-sibling::li[1]//a"
 
     infoList = []
+    retrievedInfo = None
     # addInfoList = []
 
     startDC = time()
@@ -51,8 +52,8 @@ def nextResults(webdriver):
             isEnd = True
             break
 
-        if time() - startDC >= 400:
-            print("DC reached 4 minute limit")
+        if time() - startDC >= 240:
+            print("DC reached 3 minute limit")
             back_to_search(webdriver)
             break
 

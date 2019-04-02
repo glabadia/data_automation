@@ -8,8 +8,9 @@ from bs4_searchTags import destruct_basic, destruct_adv
 from time import sleep, time
 from search import calibrateSearch
 from errorCheck import hasNoResults
+WAIT_MORE_IMG: int = 40
 EXPAND_WAIT_TIME: int = 20  # 50
-WAIT_TIME: int = 15  # 25
+WAIT_TIME: int = 25  # 25
 SLEEP_TIME: int = 10
 FAST_TIME: int = 5
 
@@ -152,7 +153,8 @@ def retrieveAllInfo(driver):
     #     vehicleInfo.append(
     #         (destruct_info_upd(basic), deconstruct_details(adv)))
     basic = destruct_basic(driver)
-    sleep(EXPAND_WAIT_TIME)
+    # sleep(WAIT_MORE_IMG)
+    sleep(WAIT_TIME)
     adv = destruct_adv(driver)
     for b, a in zip(basic, adv):
         vehicleInfo.append((b, a))
