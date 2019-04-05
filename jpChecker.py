@@ -27,7 +27,9 @@
 import re
 # ipath = "'09  Ford Mustang V8 GT Premium"
 # ipath = "'14  Alfa Romeo Sprint ｽﾌﾟﾘﾝﾄｼﾞｭﾆｱ "
-ipath = "15  Mercedes-Benz ＳＬＫ２００ Trend ＋ＡＭＧ Sports Ｐ"
+# ipath = "15  Mercedes-Benz ＳＬＫ２００ Trend ＋ＡＭＧ Sports Ｐ"
+ipath = "'12  Alfa Romeo HB ｼﾞｭﾘｴｯﾀ ｺﾝﾍﾟﾃｨﾂｨｵ-ﾈ"
+# ipath = "13  Nissan Atlas フラ Top"
 # JAP_SEARCH = u'[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\uff00-\uff9f\u4e00-\u9faf\u3400-\u4dbf]+'
 # \uff00-\uff9f = full-width roman/half-width katakana
 #   2/18/2019
@@ -39,7 +41,8 @@ JAP_SEARCH = u'[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\uff00\uff1a-\uff20\uff3b
 
 
 def find_japanese_char(input):
-    v = re.findall(JAP_SEARCH, ipath)  # => []
+    # v = re.findall(JAP_SEARCH, ipath)  # => []
+    v = re.findall(JAP_SEARCH, input)  # => []
     # print(v)
     # return True if len(v) > 0 else False
     return True if v else False

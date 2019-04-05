@@ -18,7 +18,7 @@ def getImageFileSize(link):
     # return len(imgLink)
     # sleep(.7)
     # sleep(.2)
-    return -1 if link == -1 or link == '/images/idirect_nf_large.gif' else len(requests.get(link).text)
+    return -1 if link == -1 or link == '/images/idirect_nf_large.gif' or link == '/images/idirect_nf_small.gif' else len(requests.get(link).text)
     # print(f"Image size: {len()/1024} bytes")
 
 

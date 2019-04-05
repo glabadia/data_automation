@@ -16,7 +16,7 @@ errorList = {"main_img": 2151, "yearMakeModel": "unknown", "chassisPrefix": "unk
 # 3386 -> image not available
 moreErrorList = {"auc_sheet": 228, "more_images": 2151}
 # moreErrorList = {"more_images": 2151}
-errorReturnValue = {"main_img": "no foto on main image", "jap_char": "japanese characters", "yearMakeModel": "unknown year/make/model", "chassisPrefix": "unknown chassis prefix",
+errorReturnValue = {"main_img": "no main image", "jap_char": "japanese characters", "yearMakeModel": "unknown year/make/model", "chassisPrefix": "unknown chassis prefix",
                     "transColorFuel": "no transmission/color/fuel type", "equipment": "no equipment", "yorText": "missing YOR", "yorImage": "no YOR Image", "nofoto": "Image show no foto", "auc_sheet": "no auction sheet", "more_images": "additional photos show 'no foto'"}
 errorCounter = {"jap_char": [], "yearMakeModel": [], "chassisPrefix": [],
                 "transColorFuel": [], "equipment": [], "yorText": [], "yorImage": [], "more_images": [], "auc_sheet": []}
@@ -222,13 +222,14 @@ def errorCheck_ibc_shuppin(vehiclesList, lookout=errorList, reportLog=errorRetur
 def dataVerification(vehicles, lookout=errorList, moreLookOut=moreErrorList, reportLog=errorReturnValue):
     ibcnumKey = "ibcnum"
     shuppinKey = "shuppin"
+    japanese = "jap_char"
     errorCount = error_init()
     for vehicle in vehicles:
         basic, advance = vehicle
         for key in lookout:
             if key == 'yearMakeModel':
                 if catchJap(basic[key]):
-                    errorCount[key].append(
+                    errorCount[japanese].append(
                         (basic[ibcnumKey], basic[shuppinKey]))
             if key == 'yorImage' or key == 'main_img':
                 # fast search
@@ -467,6 +468,7 @@ def convert_to_text(web_element):
 def sorted_auctionHouses(raw_dict):
     # for key, value in sorted(ah_units.items(), key=lambda items: items[-1]):
     #     sorted_ah[key] = value
+    # , reverse=True
     return {key: value for key, value in sorted(raw_dict.items(), key=lambda items: items[-1], reverse=True)}
 
 

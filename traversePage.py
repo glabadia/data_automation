@@ -45,16 +45,16 @@ def nextResults(webdriver):
         if not auctionHouseName:
             auctionHouseName = getAuctionHouse(webdriver)
 
+        if time() - startDC >= 120:
+            print("DC reached 3 minute limit")
+            back_to_search(webdriver)
+            break
+
         if results:
             print("No results displayed..")
             print(f"Data collection for [{auctionHouseName}]: incomplete")
             back_to_search(webdriver)
             isEnd = True
-            break
-
-        if time() - startDC >= 240:
-            print("DC reached 3 minute limit")
-            back_to_search(webdriver)
             break
 
         startRetrieve = time()
