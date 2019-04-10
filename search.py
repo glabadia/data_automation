@@ -26,14 +26,19 @@ def auctionHouseSearch(driver):
 
 
 def unselect_AH(driver):
-    auctionActivePath = "//div[@id='auctionsitecontainer']/span[@style='cursor: help; width: 100%;']/div[@class='btn-group open']/ul[@class='multiselect-container dropdown-menu']/li[@class='active']/a/label"
-
-    active_AH = WebDriverWait(driver, SLEEP_TIME).until(
-        EC.presence_of_all_elements_located((By.XPATH, auctionActivePath)))
+    active_AH = active_AH_list(driver)
 
     for ah in active_AH:
         sleep(.4)
         ah.click()
+
+
+def active_AH_list(driver):
+    auctionActivePath = "//div[@id='auctionsitecontainer']/span[@style='cursor: help; width: 100%;']/div[@class='btn-group open']/ul[@class='multiselect-container dropdown-menu']/li[@class='active']/a/label"
+
+    active_AH = WebDriverWait(driver, SLEEP_TIME).until(
+        EC.presence_of_all_elements_located((By.XPATH, auctionActivePath)))
+    return active_AH
 
 
 def auctionHouseClick(driver, auction_houses):
@@ -67,6 +72,17 @@ def auctionHouseClick(driver, auction_houses):
 
 def sorted_auction_search(driver):
     auction_houses = auctionHouseSearch(driver)
+    converted_AH = convert_to_text(auction_houses)
+    trimmed_list = trimm_list(converted_AH, "-")
+    num_units = trimm_list_v2(converted_AH, "-", "Units")
+    ah_units = ah_table(trimmed_list, num_units)
+    ah_web_element = ah_table(trimmed_list, auction_houses)
+    sorted_ah = sorted_auctionHouses(ah_units)
+    return sorted_ah, ah_web_element
+
+
+def auctionHouse_webElement(driver):
+    auction_houses = active_AH_list(driver)
     converted_AH = convert_to_text(auction_houses)
     trimmed_list = trimm_list(converted_AH, "-")
     num_units = trimm_list_v2(converted_AH, "-", "Units")

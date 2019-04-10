@@ -31,7 +31,7 @@ def isInvalidRequest(imageSize):
 
 
 def isAucSheetIncomplete(aucSheet):
-    return 230 >= aucSheet >= 227
+    return 230 >= aucSheet >= 227 or aucSheet == 301
 
 
 def isAucSheetNoFoto(aucSheet):

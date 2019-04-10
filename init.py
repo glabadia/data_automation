@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from time import sleep, time
 from userlogin import userLogin, userLoginIdirect
-from search import searchFunc, auctionHouseClick, auctionHouseSearch, unselect_AH, open_dropdownbox, sorted_auction_search
+from search import searchFunc, auctionHouseClick, auctionHouseSearch, unselect_AH, open_dropdownbox, sorted_auction_search, active_AH_list, auctionHouse_webElement
 from results import expandVehicleInfoIdirect, retrieveInfoUpd, retrieveInfoDetail, expandButton, waitLoader
 from utils import printList, destructure, printDict, errorCheckUpd, createDirectory
 from traversePage import nextResults
@@ -85,7 +85,7 @@ def sorted_AH_search(driver):
     not_first_run = False
     sorted_ah_list, web_element = sorted_auction_search(driver)
     for auction_house in sorted_ah_list:
-        sleep(10)
+        sleep(5)
         if not_first_run:
             open_dropdownbox(driver)
             unselect_AH(driver)
@@ -96,5 +96,25 @@ def sorted_AH_search(driver):
         not_first_run = True
 
 
+def search_active_AH(driver):
+    createDirectory()
+
+    open_dropdownbox(driver)
+    not_first_run = False
+    sorted, webElement = auctionHouse_webElement(driver)
+    print(f"{sorted}")
+    for ah in sorted:
+        sleep(5)
+        if not_first_run:
+            open_dropdownbox(driver)
+        unselect_AH(driver)
+        print(f"Now searching for: {ah}...")
+        webElement[ah].click()
+        one_AH_search(driver)
+        print(f"Finished searching for: {ah}")
+        not_first_run = True
+
+
 one_AH_search(driver)
 # sorted_AH_search(driver)
+# search_active_AH(driver)

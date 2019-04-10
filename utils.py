@@ -231,30 +231,33 @@ def dataVerification(vehicles, lookout=errorList, moreLookOut=moreErrorList, rep
                 if catchJap(basic[key]):
                     errorCount[japanese].append(
                         (basic[ibcnumKey], basic[shuppinKey]))
-            if key == 'yorImage' or key == 'main_img':
-                # fast search
-                if lookout[key] == getImageFileSize(basic[key]):
-                    # if lookout[key] == basic[key]:  # standard search
-                    errorCount[key].append(
-                        (basic[ibcnumKey], basic[shuppinKey]))
-            else:
+            # if key == 'yorImage' or key == 'main_img':
+            #     # fast search
+            #     if lookout[key] == getImageFileSize(basic[key]):
+            #         # if lookout[key] == basic[key]:  # standard search
+            #         errorCount[key].append(
+            #             (basic[ibcnumKey], basic[shuppinKey]))
+            # else:
+
+            if key != 'yorImage' and key != 'main_img':
+                    # print(f"Key is {key}")
                 if lookout[key].lower() in basic[key].lower():
                     errorCount[key].append(
                         (basic[ibcnumKey], basic[shuppinKey]))
-        for key in moreLookOut:
-            if key == 'more_images':
-                imagesList = advance[key]
-                for image in imagesList:
-                    if isNoFoto(image):
-                        errorCount[key].append(
-                            (basic[ibcnumKey], basic[shuppinKey]))
-                        break
-            if key == 'auc_sheet':
-                # if isAucSheetIncomplete(advance[key]):
-                if isAucSheetIncomplete(getImageFileSize(advance[key])):
-                    errorCount[key].append(
-                        (basic[ibcnumKey], basic[shuppinKey]))
-                    # break
+        # for key in moreLookOut:
+        #     if key == 'more_images':
+        #         imagesList = advance[key]
+        #         for image in imagesList:
+        #             if isNoFoto(image):
+        #                 errorCount[key].append(
+        #                     (basic[ibcnumKey], basic[shuppinKey]))
+        #                 break
+        #     if key == 'auc_sheet':
+        #         # if isAucSheetIncomplete(advance[key]):
+        #         if isAucSheetIncomplete(getImageFileSize(advance[key])):
+        #             errorCount[key].append(
+        #                 (basic[ibcnumKey], basic[shuppinKey]))
+                # break
     return errorCount
 
 
@@ -367,7 +370,7 @@ def printToFile(duration, fileName="testFile", contentList=""):
             f"Error checking completed within {convert_time(check_time)} seconds.\n")
         writer.write(f"Finished checking on {getTimeStamp()} \n")
         writer.write(
-            "#############################################################\n")
+            "#############################################################\n\n")
         for content in contentList:
             writer.write(f"{content.title()}:\n")
             value = contentList[content]
