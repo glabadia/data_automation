@@ -257,7 +257,7 @@ def dataVerification(vehicles, lookout=errorList, moreLookOut=moreErrorList, rep
         #         if isAucSheetIncomplete(getImageFileSize(advance[key])):
         #             errorCount[key].append(
         #                 (basic[ibcnumKey], basic[shuppinKey]))
-                # break
+        #         break
     return errorCount
 
 
@@ -472,7 +472,7 @@ def sorted_auctionHouses(raw_dict):
     # for key, value in sorted(ah_units.items(), key=lambda items: items[-1]):
     #     sorted_ah[key] = value
     # , reverse=True
-    return {key: value for key, value in sorted(raw_dict.items(), key=lambda items: items[-1], reverse=True)}
+    return {key: value for key, value in sorted(raw_dict.items(), key=lambda items: items[-1])}
 
 
 def trimm_list(input_list, element_to_trim):

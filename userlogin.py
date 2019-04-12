@@ -24,8 +24,11 @@ def userLoginIdirect(un, pw, driver):
     # loginPath = "//div[@class='login_ipad visible-md visible-sm login_form']//a[@class='btn btn-primary'][contains(text(),'Login')]"
     # Firefox
     loginPath = "//div[@id='login_container_web']//a[@class='btn btn-primary'][contains(text(),'Login')]"
+    # loginPath = "a.btn.btn-primary"
     loginButton = WebDriverWait(driver, SLEEP_TIME).until(
         EC.presence_of_element_located((By.XPATH, loginPath)))
+    # loginButton = WebDriverWait(driver, SLEEP_TIME).until(
+    #     EC.presence_of_element_located((By.CSS_SELECTOR, loginPath)))
     loginButton.click()
 
     driver.find_element_by_id("username").send_keys(un)

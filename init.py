@@ -97,12 +97,21 @@ def sorted_AH_search(driver):
 
 
 def search_active_AH(driver):
+    '''
+    1. get all references of selected auction houses as auctionHouses
+    2. sort auctionHouses, depending on the parameter (if normal sort or reverse)
+    3. uncheck all auction houses
+    4. traverse all auction houses, starting with the first element
+    5. upon selecting the first element, click the auction house (select the checkbox)
+    6. click search
+    7. after search finish, proceed with the next auction house in the traverse list
+    '''
     createDirectory()
 
     open_dropdownbox(driver)
     not_first_run = False
     sorted, webElement = auctionHouse_webElement(driver)
-    print(f"{sorted}")
+    print(f"{*sorted.items()}")
     for ah in sorted:
         sleep(5)
         if not_first_run:
@@ -115,6 +124,6 @@ def search_active_AH(driver):
         not_first_run = True
 
 
-one_AH_search(driver)
+# one_AH_search(driver)
 # sorted_AH_search(driver)
-# search_active_AH(driver)
+search_active_AH(driver)

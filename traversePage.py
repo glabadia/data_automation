@@ -29,7 +29,7 @@ def nextResults(webdriver):
 
     startDC = time()
     isEnd = False
-    createDirectory()
+    # createDirectory()
 
     auctionHouseName = ""
 
@@ -45,7 +45,7 @@ def nextResults(webdriver):
         if not auctionHouseName:
             auctionHouseName = getAuctionHouse(webdriver)
 
-        if time() - startDC >= 400:
+        if time() - startDC >= 300:
             print("DC reached 3 minute limit")
             back_to_search(webdriver)
             break

@@ -124,8 +124,22 @@ def writeToFile(stream):
 
 
 # val = tuple_to_list()[0]
-val = ["54", "23", "23", "23", "23", "23", "23", "23", "23",
-       "23", "23", "23", "23", "23", "23", "23", "23", "23"]
+# val = ["54", "23", "23", "23", "23", "23", "23", "23", "23",
+#        "23", "23", "23", "23", "23", "23", "23", "23", "23"]
 # print(tuple_to_list()[-1])
 
 # writeToFile(val)
+
+
+def testFetch():
+    from urllib.request import urlopen
+    req = urlopen("http://idirect.ibcjapan.co.jp/Images/ibcjapan-web-logo.png")
+    metadata = req.getheader('Content-Length')
+    try:
+        stream = int(metadata)
+    except:
+        stream = -1
+    print(f"Data is: {stream}")
+
+
+testFetch()
